@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import Menu from "../layout/Menu";
 import ReservationForm from "./ReservationsForm";
 
 
@@ -37,7 +38,7 @@ function NewReservationPage() {
 
   return (
     <div className="container">
-      <Menu /> {/*not made yet*/}
+      <Menu />
 
       <h1>New Reservations</h1>
 

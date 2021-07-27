@@ -55,3 +55,5 @@ function NewReservationPage() {
     </div>
   )
 }
+
+export default NewReservationPage;

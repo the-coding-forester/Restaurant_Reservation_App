@@ -16,7 +16,6 @@ import { today } from "../utils/date-time";
 function Routes() {
   return (
     <>
-      <Header />
       <div className="container">
         <Switch>
           <Route exact={true} path="/">

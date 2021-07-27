@@ -1,5 +1,5 @@
 .blur-behind {
-  backdrop-filter: blur(15px) saturate(70%);
+  backdrop-filter: blur(15px) saturate(90%);
 }
 
 .brand {
@@ -8,7 +8,7 @@
 
 body {
   font-family: Consolas, monospace;
-  background-color: rgb(135, 146, 236);
+  background-color: rgb(53, 122, 131);
 }
 
 table {

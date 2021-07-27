@@ -65,11 +65,13 @@ function ReservationForm({
         <label htmlFor="mobile_number">Mobile Number</label>
         <input
           id="mobile_number"
-          type="text"
+          type="tel"
           mobile_number="mobile_number"
           className="form-control"
           required
-          placeholder="Mobile Number"
+          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+          placeholder="123-456-7890"
+          minLength="12"
           onChange={handleMobile_numberChange}
           value={mobile_number} />
       </div>

@@ -1,11 +1,28 @@
 import React from "react"
 
-function ReservationForm({ firstName, lastName, onFirstNameChange, onLastNameChange, mobileNumber, onMobileNumberChange, partySize, onPartySizeChange, date, onDateChange, reservationTime, onTimeChange, onSubmit, onCancel }) {
-  const handleFirstNameChange = (event) => onFirstNameChange(event.target.value);
-  const handleLastNameChange = (event) => onLastNameChange(event.target.value);
-  const handleMobileNumberChange = (event) => onMobileNumberChange(event.target.value);
-  const handlePartySizeChange = (event) => onPartySizeChange(event.target.value);
+function ReservationForm({
+  first_name,
+  last_name,
+  onFirst_nameChange,
+  onLast_nameChange,
+  mobile_number,
+  onMobile_numberChange,
+  reservation_date,
+  onReservation_dateChange,
+  reservation_time,
+  onReservation_timeChange,
+  people,
+  onPeopleChange,
+  onSubmit,
+  onCancel }) {
 
+
+  const handleFirst_nameChange = (event) => onFirst_nameChange(event.target.value);
+  const handleLast_nameChange = (event) => onLast_nameChange(event.target.value);
+  const handleMobile_numberChange = (event) => onMobile_numberChange(event.target.value);
+  const handlePeopleChange = (event) => onPeopleChange(event.target.value);
+  const handleReservation_dateChange = (event) => onReservation_dateChange(event.target.value);
+  const handleReservation_timeChange = (event) => onReservation_timeChange(event.target.value);
 
 
   const handleClickCancel = (event) => {
@@ -21,52 +38,74 @@ function ReservationForm({ firstName, lastName, onFirstNameChange, onLastNameCha
   return (
     <form className="reservation-edit" onSubmit={handleSubmitForm}>
       <div className="form-group">
-        <label htmlFor="firstName">First name</label>
+        <label htmlFor="first_name">First name</label>
         <input
-          id="firstName"
+          id="first_name"
           type="text"
-          firstName="firstName"
+          first_name="first_name"
           className="form-control"
           required
           placeholder="First Name"
-          onChange={handleFirstNameChange}
-          value={firstName} />
+          onChange={handleFirst_nameChange}
+          value={first_name} />
       </div>
       <div className="form-group">
-        <label htmlFor="lastName">Last name</label>
+        <label htmlFor="last_name">Last name</label>
         <input
-          id="lastName"
+          id="last_name"
           type="text"
-          lastName="lastName"
+          last_name="last_name"
           className="form-control"
           required
-          placeholder="First Name"
-          onChange={handleLastNameChange}
-          value={lastName} />
+          placeholder="Last Name"
+          onChange={handleLast_nameChange}
+          value={last_name} />
       </div>
       <div className="form-group">
-        <label htmlFor="mobileNumber">Mobile Number</label>
+        <label htmlFor="mobile_number">Mobile Number</label>
         <input
-          id="mobileNumber"
+          id="mobile_number"
           type="text"
-          mobileNumber="mobileNumber"
+          mobile_number="mobile_number"
           className="form-control"
           required
-          placeholder="First Name"
-          onChange={handleMobileNumberChange}
-          value={mobileNumber} />
+          placeholder="Mobile Number"
+          onChange={handleMobile_numberChange}
+          value={mobile_number} />
       </div>
       <div className="form-group">
-        <label htmlFor="partySize">Party size</label>
+        <label htmlFor="people">Party size</label>
         <input
-          id="partySize"
+          id="people"
           type="text"
-          partySize="partySize"
+          people="people"
           className="form-control"
           required
-          placeholder="First Name"
-          onChange={handlePartySizeChange}
-          value={partySize} />
+          placeholder="Party Size"
+          onChange={handlePeopleChange}
+          value={people} />
+      </div>
+      <div className="form-group">
+        <label htmlFor="reservation_date">Reservation Date</label>
+        <input
+          id="reservation_date"
+          type="date"
+          reservation_date="reservation_date"
+          className="form-control"
+          required
+          onChange={handleReservation_dateChange}
+          value={reservation_date} />
+      </div>
+      <div className="form-group">
+        <label htmlFor="reservation_time">Reservation Time</label>
+        <input
+          id="reservation_time"
+          type="time"
+          reservation_time="reservation_time"
+          className="form-control"
+          required
+          onChange={handleReservation_timeChange}
+          value={reservation_time} />
       </div>
       <button
         type="button"

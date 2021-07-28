@@ -122,6 +122,8 @@ function ReservationForm({
           reservation_date="reservation_date"
           className="form-control"
           required
+          placeholder="YYYY-MM-DD"
+          pattern="\d{4}-\d{2}-\d{2}"
           onChange={handleReservationDateChange}
           value={reservation.reservation_date} />
       </div>
@@ -133,6 +135,8 @@ function ReservationForm({
           reservation_time="reservation_time"
           className="form-control"
           required
+          placeholder="HH:MM"
+          pattern="[0-9]{2}:[0-9]{2}"
           onChange={handleReservationTimeChange}
           value={reservation.reservation_time} />
       </div>

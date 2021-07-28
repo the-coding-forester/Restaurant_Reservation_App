@@ -26,6 +26,9 @@ const valid_properties = [
   "reservation_time",
 ];
 
+const hasOnlyValidProperties = onlyValidProperties(valid_properties);
+const hasRequiredProperties = hasProperties(required_properties);
+
 // Validate that reservation exists
 const reservationExists = async (req, res, next) => {
   const { reservationId } = req.params;
@@ -40,19 +43,6 @@ const reservationExists = async (req, res, next) => {
     message: `Reservation ${reservationId} cannot be found.`,
   });
 };
-
-// Validate is reservation id is present
-const reservationIdIsPresent = (req, res, next) => {
-  const { reservationId } = req.params;
-  const { reservation_id } = res.locals.reservation;
-  if (!reservation_id || Number(reservation_id) === Number(reservationId)) {
-    return next();
-  }
-  next({
-    status: 400,
-    message: `reservation_id '${reservation_id}' should be absent or match url '${reservationId}'.`,
-  });
-}
 
 // Validate date of reservation
 const hasValidDate = (req, res, next) => {
@@ -103,7 +93,43 @@ const hasValidPeople = (req, res, next) => {
   });
 }
 
+// CRUD Functions
+
+// Create for Route ('/reservations/new')
+const create = async (req, res) => {
+  const data = await service.create(req.body.data);
+  res.status(201).json({ data })
+}
+
+// Read for Route ('/reservations/:reservationId')
+const read = (req, res) => {
+  const { reservation_id } = req.params;
+  const data = await service.read(reservation_id);
+  res.json({ data });
+}
+
+
+const list = async (req, res) => {
+  const { date } = req.query;
+
+  if (date) {
+    const data = await service.listReservationsOnDay(date);
+    res.json({ data });
+  } else {
+    const data = await service.list();
+    res.json({ data });
+  }
+}
 
 module.exports = {
-  list,
+  list: asyncErrorBoundary(list),
+  create: [
+    hasOnlyValidProperties,
+    hasRequiredProperties,
+    hasValidDate,
+    hasValidTime,
+    hasValidPeople,
+    asyncErrorBoundary(create),
+  ],
+  read: [asyncErrorBoundary(reservationExists), read],
 };

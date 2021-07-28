@@ -1,28 +1,54 @@
 import React from "react"
 
 function ReservationForm({
-  first_name,
-  last_name,
-  onFirst_nameChange,
-  onLast_nameChange,
-  mobile_number,
-  onMobile_numberChange,
-  reservation_date,
-  onReservation_dateChange,
-  reservation_time,
-  onReservation_timeChange,
-  people,
-  onPeopleChange,
+  reservation,
+  onReservationChanged,
   onSubmit,
   onCancel }) {
 
 
-  const handleFirst_nameChange = (event) => onFirst_nameChange(event.target.value);
-  const handleLast_nameChange = (event) => onLast_nameChange(event.target.value);
-  const handleMobile_numberChange = (event) => onMobile_numberChange(event.target.value);
-  const handlePeopleChange = (event) => onPeopleChange(event.target.value);
-  const handleReservation_dateChange = (event) => onReservation_dateChange(event.target.value);
-  const handleReservation_timeChange = (event) => onReservation_timeChange(event.target.value);
+  const handleFirstNameChange = (event) => {
+    onReservationChanged({
+      ...reservation,
+      first_name: event.target.value,
+    });
+  };
+
+  const handleLastNameChange = (event) => {
+    onReservationChanged({
+      ...reservation,
+      last_name: event.target.value,
+    });
+  };
+
+
+  const handleMobileNumberChange = (event) => {
+    onReservationChanged({
+      ...reservation,
+      mobile_number: event.target.value,
+    });
+  };
+
+  const handlePeopleChange = (event) => {
+    onReservationChanged({
+      ...reservation,
+      people: event.target.value,
+    });
+  };
+
+  const handleReservationDateChange = (event) => {
+    onReservationChanged({
+      ...reservation,
+      reservation_date: event.target.value,
+    });
+  };
+
+  const handleReservationTimeChange = (event) => {
+    onReservationChanged({
+      ...reservation,
+      reservation_time: event.target.value,
+    });
+  };
 
 
   const handleClickCancel = (event) => {
@@ -32,6 +58,7 @@ function ReservationForm({
 
   const handleSubmitForm = (event) => {
     event.preventDefault();
+    //add state validation
     onSubmit();
   }
 
@@ -46,8 +73,8 @@ function ReservationForm({
           className="form-control"
           required
           placeholder="First Name"
-          onChange={handleFirst_nameChange}
-          value={first_name} />
+          onChange={handleFirstNameChange}
+          value={reservation.first_name} />
       </div>
       <div className="form-group">
         <label htmlFor="last_name">Last name</label>
@@ -58,8 +85,8 @@ function ReservationForm({
           className="form-control"
           required
           placeholder="Last Name"
-          onChange={handleLast_nameChange}
-          value={last_name} />
+          onChange={handleLastNameChange}
+          value={reservation.last_name} />
       </div>
       <div className="form-group">
         <label htmlFor="mobile_number">Mobile Number</label>
@@ -71,9 +98,9 @@ function ReservationForm({
           required
           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
           placeholder="123-456-7890"
-          minLength="12"
-          onChange={handleMobile_numberChange}
-          value={mobile_number} />
+          minLength="9"
+          onChange={handleMobileNumberChange}
+          value={reservation.mobile_number} />
       </div>
       <div className="form-group">
         <label htmlFor="people">Party size</label>
@@ -85,7 +112,7 @@ function ReservationForm({
           required
           placeholder="Party Size"
           onChange={handlePeopleChange}
-          value={people} />
+          value={reservation.people} />
       </div>
       <div className="form-group">
         <label htmlFor="reservation_date">Reservation Date</label>
@@ -95,8 +122,8 @@ function ReservationForm({
           reservation_date="reservation_date"
           className="form-control"
           required
-          onChange={handleReservation_dateChange}
-          value={reservation_date} />
+          onChange={handleReservationDateChange}
+          value={reservation.reservation_date} />
       </div>
       <div className="form-group">
         <label htmlFor="reservation_time">Reservation Time</label>
@@ -106,8 +133,8 @@ function ReservationForm({
           reservation_time="reservation_time"
           className="form-control"
           required
-          onChange={handleReservation_timeChange}
-          value={reservation_time} />
+          onChange={handleReservationTimeChange}
+          value={reservation.reservation_time} />
       </div>
       <button
         type="button"

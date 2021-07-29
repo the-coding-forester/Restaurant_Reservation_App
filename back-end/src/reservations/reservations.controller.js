@@ -4,11 +4,20 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
-const onlyValidProperties = require("../errors/onlyValidProperties");
 
-// Validation Middleware
+// VALIDATION MIDDLEWARE
 
-const required_properties = [
+const VALID_PROPERTIES = [
+  "first_name",
+  "last_name",
+  "mobile_number",
+  "reservation_date",
+  "reservation_time",
+  "people",
+  "status"
+];
+
+const REQUIRED_PROPERTIES = [
   "first_name",
   "last_name",
   "people",
@@ -16,18 +25,24 @@ const required_properties = [
   "reservation_date",
   "reservation_time",
 ];
-const valid_properties = [
-  "first_name",
-  "last_name",
-  "people",
-  "status",
-  "mobile_number",
-  "reservation_date",
-  "reservation_time",
-];
 
-const hasOnlyValidProperties = onlyValidProperties(valid_properties);
-const hasRequiredProperties = hasProperties(required_properties);
+const hasOnlyValidProperties = (req, res, next) => {
+  const { data = {} } = req.body;
+
+  const invalidFields = Object.keys(data).filter(
+    (field) => !VALID_PROPERTIES.includes(field)
+  );
+
+  if (invalidFields.length) {
+    return next({
+      status: 400,
+      message: `Invalid field(s): ${invalidFields.join(", ")}`,
+    });
+  }
+  next();
+}
+
+const hasRequiredProperties = hasProperties(REQUIRED_PROPERTIES);
 
 // Validate that reservation exists
 const reservationExists = async (req, res, next) => {
@@ -44,76 +59,19 @@ const reservationExists = async (req, res, next) => {
   });
 };
 
-// Validate date of reservation
-const hasValidDate = (req, res, next) => {
-  const date = req.body.data.reservation_date;
-  const valid = Date.parse(date);
-
-  if (valid) {
-    return next();
-  }
-  next({
-    status: 400,
-    message: `reservation_date '${date}' is not a date.`,
-  });
-}
-
-async function list(req, res) {
-  res.json({
-    data: [],
-  });
-}
-
-// Validate time of reservation
-const hasValidTime = (req, res, next) => {
-  const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/;
-  const time = req.body.data.reservation_time;
-  const valid = time.match(regex);
-
-  if (valid) {
-    return next();
-  }
-  next({
-    status: 400,
-    message: `reservation_time '${time}' is not a time.`,
-  });
-}
-
-// Validate party size
-const hasValidPeople = (req, res, next) => {
-  const people = req.body.data.people;
-  const valid = Number.isInteger(people);
-
-  if (valid && people > 0) {
-    return next();
-  }
-  next({
-    status: 400,
-    message: `people '${people}' is not a valid integer`,
-  });
-}
 
 // CRUD Functions
 
-// Create for Route ('/reservations/new')
 const create = async (req, res) => {
   const data = await service.create(req.body.data);
   res.status(201).json({ data })
 }
 
-// Read for Route ('/reservations/:reservationId')
-const read = (req, res) => {
-  const { reservation_id } = req.params;
-  const data = await service.read(reservation_id);
-  res.json({ data });
-}
-
-
 const list = async (req, res) => {
   const { date } = req.query;
 
   if (date) {
-    const data = await service.listReservationsOnDay(date);
+    const data = await service.listReservationsByDay(date);
     res.json({ data });
   } else {
     const data = await service.list();
@@ -121,15 +79,42 @@ const list = async (req, res) => {
   }
 }
 
+const read = async (req, res,) => {
+  const data = res.locals.reservation;
+  res.json({ data });
+}
+
+async function update(req, res) {
+  const updatedReservation = {
+    ...req.body.data,
+    reservation_id: res.locals.reservation.reservation_id,
+  };
+  const data = await service.update(updatedReservation);
+  res.json({ data });
+}
+
+async function destroy(req, res) {
+  const { reservation } = res.locals;
+  await service.delete(reservation.reservation_id);
+  res.sendStatus(204);
+}
+
 module.exports = {
-  list: asyncErrorBoundary(list),
   create: [
     hasOnlyValidProperties,
     hasRequiredProperties,
-    hasValidDate,
-    hasValidTime,
-    hasValidPeople,
-    asyncErrorBoundary(create),
+    asyncErrorBoundary(create)
   ],
-  read: [asyncErrorBoundary(reservationExists), read],
+  list: asyncErrorBoundary(list),
+  read: asyncErrorBoundary(read),
+  update: [
+    asyncErrorBoundary(reservationExists),
+    hasOnlyValidProperties,
+    hasRequiredProperties,
+    asyncErrorBoundary(update)
+  ],
+  delete: [
+    asyncErrorBoundary(reservationExists),
+    asyncErrorBoundary(destroy)
+  ],
 };

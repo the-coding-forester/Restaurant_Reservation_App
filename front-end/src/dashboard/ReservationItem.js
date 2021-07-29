@@ -26,14 +26,8 @@ function ReservationItem({ reservation, onCancelReservation }) {
         <div>
           <p> {reservation.people}</p>
         </div>
-        <div>
-          <p> {reservation.status}</p>
-        </div>
-        <div>
-          <p> {reservation.seat}</p>
-        </div>
         <Link
-          to={`/reservation/${reservation.id}/edit`}
+          to={`/reservations/${reservation.id}/edit`}
           className="btn btn-secondary mr-2"
           title="Edit" >
           <span className="oi oi-pencil" />

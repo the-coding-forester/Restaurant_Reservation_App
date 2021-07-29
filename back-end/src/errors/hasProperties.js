@@ -1,4 +1,4 @@
-function hasProperties(...properties) {
+function hasProperties(properties) {
   return function (req, res, next) {
     const { data = {} } = req.body;
 

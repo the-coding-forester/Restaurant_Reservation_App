@@ -21,16 +21,43 @@ function NewReservationPage() {
   };
 
   const [reservation, setReservation] = useState({ ...initialReservationState });
-  const [reservationsError, setReservationError] = useState(null);
+  const [reservationsErrors, setReservationErrors] = useState([]);
 
-  const handleCreateReservation = async (reservation) => {
+
+  const getFormErrors = () => {
+    const resDate = new Date(reservation.reservation_date)
+    const resDateAndTime = new Date(reservation.reservation_date + ' ' + reservation.reservation_time).getTime();
+    const today = Date.now();
+
+    const resErrors = [];
+
+    // Check if date is on a Tuesday
+    if (resDate.getUTCDay() === 2) {
+      resErrors.push({ message: `Restaurant closed on Tuesdays` });
+    }
+
+    // Check if date is in the
+    if (resDateAndTime < today) {
+      resErrors.push({ message: `Reservation must be made for a time and date in the future` });
+    }
+
+    return resErrors;
+  }
+
+  const handleCreateReservation = async () => {
     try {
+      const errors = getFormErrors();
+      if (errors.length) {
+        setReservationErrors(errors)
+        return
+      }
+
       await createReservation(reservation)
       setReservation({ ...initialReservationState })
       history.push("/");
     }
     catch (err) {
-      setReservationError(err)
+      setReservationErrors([err])
     }
   }
 
@@ -40,7 +67,7 @@ function NewReservationPage() {
   }
 
   return (
-    <div className="container">
+    <div className="NewReservation">
 
       <h1>New Reservations</h1>
 
@@ -50,7 +77,9 @@ function NewReservationPage() {
         onCancel={handleCancelReservation}
         onSubmit={handleCreateReservation}
       />
-      <ErrorAlert error={reservationsError} />
+      {reservationsErrors.map((error) => {
+        return <ErrorAlert key={error} error={error} />;
+      })}
     </div>
   )
 }

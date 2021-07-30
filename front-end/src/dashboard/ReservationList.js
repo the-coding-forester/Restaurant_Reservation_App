@@ -25,14 +25,22 @@ function ReservationList({ date }) {
 
   return (
     <div>
-      <ul className="list-group my-2">
+      <table className="table">
+        <tr>
+          <th scope="col">Time</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">First Name</th>
+          <th scope="col">Party Size</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
+        </tr>
         {reservations.map((reservation) => (
           <ReservationItem
             key={reservation.id}
             reservation={reservation}
           />
         ))}
-      </ul>
+      </table>
       <ErrorAlert error={reservationsError} />
     </div>
   )

@@ -12,31 +12,23 @@ function ReservationItem({ reservation, onCancelReservation }) {
     onCancelReservation(reservation);
   }
   return (
-    <li key={`${reservation.id}`} className="list-group-item">
-      <div className="d=flex justify-content-between">
-        <div>
-          <p> {reservation.reservation_time}</p>
-        </div>
-        <div>
-          <p> {reservation.last_name}</p>
-        </div>
-        <div>
-          <p> {reservation.first_name}</p>
-        </div>
-        <div>
-          <p> {reservation.people}</p>
-        </div>
+    <tr>
+      <td> {reservation.reservation_time}</td>
+      <td>{reservation.last_name}</td>
+      <td>{reservation.first_name}</td>
+      <td> {reservation.people}</td>
+      <td>
         <Link
           to={`/reservations/${reservation.id}/edit`}
-          className="btn btn-secondary mr-2"
+          className="btn btn-secondary mr-2 btn-sm"
           title="Edit" >
           <span className="oi oi-pencil" />
         </Link>
-        <div>
-          <button onClick={handleCancel} className="btn btn-danger"><span className="oi oi-trash"></span></button>
-        </div>
-      </div>
-    </li>
+      </td>
+      <td>
+        <button onClick={handleCancel} className="btn btn-danger btn-sm"><span className="oi oi-trash"></span></button>
+      </td>
+    </tr>
   )
 }
 

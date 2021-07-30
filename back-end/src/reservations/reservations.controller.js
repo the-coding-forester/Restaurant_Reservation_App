@@ -59,6 +59,35 @@ const reservationExists = async (req, res, next) => {
   });
 };
 
+// Return error if reservation is on a Tuesday
+const reservationNotForTuesday = (req, res, next) => {
+  const { reservation_date } = req.body.data
+  const dayOfWeek = new Date(reservation_date).getUTCDay();
+  // Tuesday would be represented by 2
+
+  if (dayOfWeek !== 2) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `Restaurant closed on Tuesdays`
+  })
+}
+
+// Return error if reservation is for a day in the past
+const reservationForFutureDate = (req, res, next) => {
+  const { reservation_date, reservation_time } = req.body.data
+  const today = Date.now();
+  const dateInQuestion = new Date(reservation_date + ' ' + reservation_time)
+
+  if (dateInQuestion > today) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `Reservation must be made for a future time and date`
+  })
+}
 
 // CRUD Functions
 
@@ -103,6 +132,8 @@ module.exports = {
   create: [
     hasOnlyValidProperties,
     hasRequiredProperties,
+    reservationNotForTuesday,
+    reservationForFutureDate,
     asyncErrorBoundary(create)
   ],
   list: asyncErrorBoundary(list),

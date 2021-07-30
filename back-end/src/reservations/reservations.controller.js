@@ -89,6 +89,21 @@ const reservationForFutureDate = (req, res, next) => {
   })
 }
 
+// Return error if reservation is NOT between 10:30am and 9:30pm
+const reservationForValidTime = (req, res, next) => {
+  const { reservation_time } = req.body.data
+  //splice to make format HHMM
+  const resTime = reservation_time.split(':').splice(4).join('');
+
+  if (resTime >= 1030 && resTime <= 2130) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `Reservations can only be made for between 9:30AM and 9:30PM. The restaurant closes at 10:30PM.`
+  })
+}
+
 // CRUD Functions
 
 const create = async (req, res) => {
@@ -134,6 +149,7 @@ module.exports = {
     hasRequiredProperties,
     reservationNotForTuesday,
     reservationForFutureDate,
+    reservationForValidTime,
     asyncErrorBoundary(create)
   ],
   list: asyncErrorBoundary(list),

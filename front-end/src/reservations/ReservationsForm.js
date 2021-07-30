@@ -1,5 +1,3 @@
-import React from "react"
-
 function ReservationForm({
   reservation,
   onReservationChanged,
@@ -56,9 +54,9 @@ function ReservationForm({
     onCancel();
   }
 
+
   const handleSubmitForm = (event) => {
     event.preventDefault();
-    //add state validation
     onSubmit();
   }
 

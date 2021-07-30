@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import ErrorAlert from "../Errors/ErrorAlert";
+import { createReservation } from "../utils/api";
 import ReservationForm from "./ReservationsForm";
 
 
@@ -18,14 +20,21 @@ function NewReservationPage() {
     people: 1,
   };
 
-  const [reservation, setReservation] = useState({ ...initialReservationState })
+  const [reservation, setReservation] = useState({ ...initialReservationState });
+  const [reservationsError, setReservationError] = useState(null);
 
-  const handleCreateReservation = (event) => {
-    setReservation({ ...initialReservationState })
-    history.push("/");
+  const handleCreateReservation = async (reservation) => {
+    try {
+      await createReservation(reservation)
+      setReservation({ ...initialReservationState })
+      history.push("/");
+    }
+    catch (err) {
+      setReservationError(err)
+    }
   }
 
-  const handleCancelReservation = () => {
+  const handleCancelReservation = async () => {
     setReservation({ ...initialReservationState })
     history.goBack();
   }
@@ -41,7 +50,7 @@ function NewReservationPage() {
         onCancel={handleCancelReservation}
         onSubmit={handleCreateReservation}
       />
-
+      <ErrorAlert error={reservationsError} />
     </div>
   )
 }

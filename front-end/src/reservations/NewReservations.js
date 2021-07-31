@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 import ErrorAlert from "../Errors/ErrorAlert";
 import { createReservation } from "../utils/api";
 import ReservationForm from "./ReservationsForm";
+import formatReservationTime from "../utils/format-reservation-time";
 
 
 function NewReservationPage() {
@@ -28,6 +29,7 @@ function NewReservationPage() {
     const resDate = new Date(reservation.reservation_date)
     const resDateAndTime = new Date(reservation.reservation_date + ' ' + reservation.reservation_time).getTime();
     const today = Date.now();
+    const resTime = reservation.reservation_time.split(':').splice(4).join('');
 
     const resErrors = [];
 
@@ -41,6 +43,10 @@ function NewReservationPage() {
       resErrors.push({ message: `Reservation must be made for a time and date in the future` });
     }
 
+    // Check if reservation time is between 9:30am and 9"30pm"
+    if (resTime < 1030 || resTime > 2130) {
+      resErrors.push({ message: `Reservations can only be made for between 9:30AM and 9:30PM. The restaurant closes at 10:30PM.` })
+    }
     return resErrors;
   }
 

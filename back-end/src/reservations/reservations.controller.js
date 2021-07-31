@@ -92,7 +92,7 @@ const reservationForFutureDate = (req, res, next) => {
 // Return error if reservation is NOT between 10:30am and 9:30pm
 const reservationForValidTime = (req, res, next) => {
   const { reservation_time } = req.body.data
-  //splice to make format HHMM
+  //splice to make format HHMM and never HHMMSS
   const resTime = reservation_time.split(':').splice(4).join('');
 
   if (resTime >= 1030 && resTime <= 2130) {

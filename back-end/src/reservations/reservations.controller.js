@@ -95,7 +95,7 @@ const reservationForValidTime = (req, res, next) => {
   //splice to make format HHMM and never HHMMSS
   const resTime = reservation_time.split(':').splice(4).join('');
 
-  if (resTime >= 1030 && resTime <= 2130) {
+  if (resTime >= 1030 || resTime <= 2130) {
     return next();
   }
   next({

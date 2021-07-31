@@ -6,12 +6,12 @@ import ReservationList from "./ReservationList";
 function Dashboard() {
   const [date, setDate] = useState(today)
 
-  const toggleToYesterday = (event) => {
+  const toggleToPrevious = (event) => {
     event.preventDefault();
     setDate(previous);
   }
 
-  const toggleToTomorrow = (event) => {
+  const toggleToNext = (event) => {
     event.preventDefault();
     setDate(next);
   }
@@ -31,9 +31,9 @@ function Dashboard() {
         <div className="container">
           <h4 className="row">Reservations for {date}</h4>
           <div class="row">
-            <button onClick={toggleToYesterday}>Yesterday</button>
+            <button onClick={toggleToPrevious}>Previous</button>
             <button onClick={toggleToToday}>Today</button>
-            <button onClick={toggleToTomorrow}>Tomorrow</button>
+            <button onClick={toggleToNext}>Next</button>
           </div>
         </div>
       </div>

@@ -43,7 +43,12 @@
     "test:8:frontend": "npm run test:8 --prefix ./front-end",
     "test:8:backend": "npm run test:8 --prefix ./back-end",
     "test:e2e": "npm run test:e2e --prefix ./front-end",
-    "test:frontend:watch": "npm test --prefix ./front-end"
+    "test:frontend:watch": "npm test --prefix ./front-end",
+    "deploy": "npm run deploy:frontend && npm run deploy:api",
+    "deploy:frontend": "git push https://git.heroku.com/reservations-frontend.git HEAD:master",
+    "deploy:backend": "git push https://git.heroku.com/reservations-api.git HEAD:master",
+    "server:restart:frontend": "heroku restart -a reservations-frontend",
+    "server:restart:backend": "heroku restart -a reservations-api"
   },
   "keywords": [],
   "author": "Thinkful, Inc.",

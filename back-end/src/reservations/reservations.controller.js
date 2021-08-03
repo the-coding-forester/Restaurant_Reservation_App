@@ -44,10 +44,10 @@ const hasOnlyValidProperties = (req, res, next) => {
 
 const hasRequiredProperties = hasProperties(REQUIRED_PROPERTIES);
 
-// Validate that reservation exists
+// Validate that reservation with id in params exists
 const reservationExists = async (req, res, next) => {
   const { reservationId } = req.params;
-  const reservation = await service.read(reservationId);
+  const reservation = await service.read(reservationId)
 
   if (reservation) {
     res.locals.reservation = reservation;
@@ -55,9 +55,54 @@ const reservationExists = async (req, res, next) => {
   }
   next({
     status: 404,
-    message: `Reservation ${reservationId} cannot be found.`,
+    message: `Reservation_id ${reservationId} does not exist.`
   });
+
 };
+
+// Validate that reservation date is a date
+const hasValidDate = (req, res, next) => {
+  const { reservation_date } = req.body.data;
+  const result = Date.parse(reservation_date);
+
+  if (isNaN(result)) {
+    return next({
+      status: 400,
+      message: `reservation_date '${reservation_date}' is not a date.`
+    });
+  }
+  next();
+}
+
+// Validate that reservation time is a time
+const hasValidTime = (req, res, next) => {
+  const { reservation_time } = req.body.data;
+  const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/;
+  //will store the result of if time matches the regex format
+  const result = reservation_time.match(regex);
+
+  if (result) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `reservation_time '${reservation_time}' is not a time.`
+  })
+}
+
+// Validate that party size is a number
+const hasValidNumberPeople = (req, res, next) => {
+  const { people } = req.body.data;
+
+  if (typeof people === "number" && people >= 1) {
+    return next();
+  }
+
+  next({
+    status: 400,
+    message: "Amount of people for party size must be a integer/whole number of at least 1."
+  });
+}
 
 // Return error if reservation is on a Tuesday
 const reservationNotForTuesday = (req, res, next) => {
@@ -85,12 +130,12 @@ const reservationForFutureDate = (req, res, next) => {
   }
   next({
     status: 400,
-    message: `Reservation must be made for a future time and date`
+    message: `Reservation time and date must be made for a future time and date`
   })
 }
 
 // Return error if reservation is NOT between 10:30am and 9:30pm
-const reservationForValidTime = (req, res, next) => {
+const reservationForResHours = (req, res, next) => {
   const { reservation_time } = req.body.data
   //splice to make format HHMM and never HHMMSS
   const resTime = reservation_time.split(':').splice(4).join('');
@@ -100,7 +145,7 @@ const reservationForValidTime = (req, res, next) => {
   }
   next({
     status: 400,
-    message: `Reservations can only be made for between 9:30AM and 9:30PM. The restaurant closes at 10:30PM.`
+    message: `Reservation_time must be between 9:30AM and 9:30PM. The restaurant closes at 10:30PM.`
   })
 }
 
@@ -147,21 +192,27 @@ module.exports = {
   create: [
     hasOnlyValidProperties,
     hasRequiredProperties,
+    hasValidDate,
+    hasValidTime,
+    hasValidNumberPeople,
     reservationNotForTuesday,
     reservationForFutureDate,
-    reservationForValidTime,
+    reservationForResHours,
     asyncErrorBoundary(create)
   ],
   list: asyncErrorBoundary(list),
-  read: asyncErrorBoundary(read),
+  read: [
+    asyncErrorBoundary(reservationExists),
+    read
+  ],
   update: [
     asyncErrorBoundary(reservationExists),
+    hasValidDate,
     hasOnlyValidProperties,
     hasRequiredProperties,
     asyncErrorBoundary(update)
   ],
   delete: [
-    asyncErrorBoundary(reservationExists),
     asyncErrorBoundary(destroy)
   ],
 };

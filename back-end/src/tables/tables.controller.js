@@ -1,17 +1,18 @@
 const service = require("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
-const reservationService = require("../reservations/reservations.service")
+const hasProperties = require("../errors/hasProperties")
 
 // VALIDATION MIDDLEWARE
 const VALID_PROPERTIES = [
   "table_name",
-  "capacity"
+  "capacity",
+  "reservation_id",
+  "people"
 ];
 
 const REQUIRED_PROPERTIES = [
   "table_name",
   "capacity",
-  "reservation_id"
 ];
 
 // Checks if properties are valid
@@ -35,9 +36,9 @@ const hasOnlyValidProperties = (req, res, next) => {
 const hasRequiredProperties = hasProperties(REQUIRED_PROPERTIES);
 
 // Check if table exists
-const tableExists = (req, res, next) => {
-  const id = req.params.table_id;
-  const table = await service.read(Number(id));
+const tableExists = async (req, res, next) => {
+  const { tableId } = req.params;
+  const table = await service.read(tableId);
 
   //if table exists move on
   if (table) {
@@ -47,7 +48,7 @@ const tableExists = (req, res, next) => {
   //return error if table doesn't exist
   return next({
     status: 404,
-    message: `Table with id: ${id}, not found.`
+    message: `Table_id ${tableId} not found.`
   });
 }
 
@@ -55,81 +56,43 @@ const tableExists = (req, res, next) => {
 const hasValidName = (req, res, next) => {
   const { table_name } = req.body.data;
 
-  // check that length of table name is at least 2, not empty, and exists
-  if (table_name.length >= 2) {
-    return next();
+  if (table_name.length < 2) {
+    //return error if table name is less than 2 characters
+    return next({
+      status: 400,
+      message: `The table_name '${table_name}' must be at least 2 characters long.`
+    });
   }
-  //return error if table name is less than 2 characters
-  next({
-    status: 400,
-    message: `The table name for: ${table_name}, must be at least 2 characters long.`
-  });
+  return next();
 }
 
 // Check if capacity is at least one
 const hasValidCapacity = (req, res, next) => {
   const { capacity } = req.body.data;
+  console.log(capacity)
 
-  // check that capacity is a number AND at least 1
-  if (Number.isInteger(capacity) && capacity >= 1) {
+  // check that capacity is a number AND greater than 0
+  if (capacity > 0 && Number.isInteger(capacity)) {
     return next();
   }
   next({
     status: 400,
-    message: `The table capacity must be at least 1.`
+    message: `Table capacity '${capacity}' must be a number greater than 0.`
   });
 }
 
-// Check that the attached reservation has an id
-const hasReservationId = (req, res, next) => {
-  const { reservation_id } = req.body.data;
-  if (!reservation_id) {
-    next({
-      status: 400,
-      message: `You need to have a reservation_id.`
-    });
-  }
-  return next();
-}
+// // Check that capacity is sufficient for reservation
+// const hasCapacityForRes = async (req, res, next) => {
+//   const { reservation, table } = res.locals;
 
-// Check that attached reservation exists
-const reservationIdExists = (req, res, next) => {
-  const { reservation_id } = req.body.data;
-  const reservation = await reservationService.read(reservation_id);
-  if (!reservation) {
-    next({
-      status: 400,
-      message: `The reservation id ${reservation_id} does not exist.`
-    });
-  }
-  return next();
-}
-
-// Check that table is occupied
-const isOccupied = async (req, res, next) => {
-  const table_id = req.params.table_id;
-  const table = await service.read(table_id);
-  if (table.reservation_id) {
-    return next();
-  }
-  next({
-    status: 400,
-    message: `Table is occupied.`
-  });
-}
-
-// Check that capacity is sufficient for reservation
-const hasCapacityForRes = async (req, res, next) => {
-  const { reservation, table } = res.locals;
-
-  if (table.capacity >= reservation.people) {
-    return next();
-  }
-  next({
-    status: 400,
-    message: `The table capacity is to small for the reservation. Table capacity: ${table.capacity}, Party size: ${reservation.people}.`,
-  });
-}
+//   if (table.capacity >= reservation.people) {
+//     return next();
+//   }
+//   next({
+//     status: 400,
+//     message: `The table capacity is to small for the reservation. Table capacity: ${table.capacity}, Party size: ${reservation.people}.`,
+//   });
+// }
 
 // CRUD FUNCTIONS
 

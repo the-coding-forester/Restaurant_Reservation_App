@@ -110,10 +110,14 @@ const read = async (req, res) => {
   res.json({ data });
 }
 
-const updateSeatReservation = async (req, res) => {
-  const { reservation_id } = req.body.data;
+const update = async (req, res) => {
   const table_id = req.params.tableId;
-  const data = await service.updateSeatReservation(reservation_id, table_id);
+  const updatedTable = {
+    ...req.body.data,
+    table_id: table_id,
+    occupied: true,
+  }
+  const data = await service.update(updatedTable);
   res.json({ data });
 }
 
@@ -130,9 +134,5 @@ module.exports = {
     asyncErrorBoundary(tableExists),
     asyncErrorBoundary(read),
   ],
-  updateSeatReservation: [
-    hasOnlyValidProperties,
-    hasRequiredProperties,
-    asyncErrorBoundary(updateSeatReservation),
-  ],
+  update: asyncErrorBoundary(update),
 }

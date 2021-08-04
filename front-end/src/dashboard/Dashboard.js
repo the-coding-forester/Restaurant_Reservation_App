@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { next, previous, today } from "../utils/date-time";
+import useQuery from "../utils/useQuery";
 import ReservationList from "./ReservationList";
 
 
 function Dashboard() {
-  const [date, setDate] = useState(today)
+  const query = useQuery();
+  const queryDate = query.get("date")
+  const [date, setDate] = useState(queryDate || today)
 
   const toggleToPrevious = (event) => {
     event.preventDefault();
@@ -29,8 +32,8 @@ function Dashboard() {
       <div className="d-md-flex mb-3">
         <br />
         <div className="container">
-          <h4 className="row">Reservations for {date}</h4>
-          <div class="row">
+          <h4 className="row">Reservations for {date.slice(0, 10)}</h4>
+          <div className="row">
             <button onClick={toggleToPrevious}>Previous</button>
             <button onClick={toggleToToday}>Today</button>
             <button onClick={toggleToNext}>Next</button>

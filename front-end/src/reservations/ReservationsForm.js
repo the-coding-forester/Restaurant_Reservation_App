@@ -30,7 +30,7 @@ function ReservationForm({
   const handlePeopleChange = (event) => {
     onReservationChanged({
       ...reservation,
-      people: event.target.value,
+      people: Number(event.target.value),
     });
   };
 
@@ -67,7 +67,7 @@ function ReservationForm({
         <input
           id="first_name"
           type="text"
-          first_name="first_name"
+          name="first_name"
           className="form-control"
           required
           placeholder="First Name"
@@ -79,7 +79,7 @@ function ReservationForm({
         <input
           id="last_name"
           type="text"
-          last_name="last_name"
+          name="last_name"
           className="form-control"
           required
           placeholder="Last Name"
@@ -91,21 +91,22 @@ function ReservationForm({
         <input
           id="mobile_number"
           type="tel"
-          mobile_number="mobile_number"
+          name="mobile_number"
           className="form-control"
           required
-          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+          pattern="([0-9]{3}-)?[0-9]{3}-[0-9]{4}"
           placeholder="123-456-7890"
-          minLength="9"
+          maxLength="12"
           onChange={handleMobileNumberChange}
-          value={reservation.mobile_number} />
+          value={reservation.mobile_number}
+        />
       </div>
       <div className="form-group">
         <label htmlFor="people">Party size</label>
         <input
           id="people"
           type="text"
-          people="people"
+          name="people"
           className="form-control"
           required
           placeholder="Party Size"
@@ -117,7 +118,7 @@ function ReservationForm({
         <input
           id="reservation_date"
           type="date"
-          reservation_date="reservation_date"
+          name="reservation_date"
           className="form-control"
           required
           placeholder="YYYY-MM-DD"
@@ -130,7 +131,7 @@ function ReservationForm({
         <input
           id="reservation_time"
           type="time"
-          reservation_time="reservation_time"
+          name="reservation_time"
           className="form-control"
           required
           placeholder="HH:MM"

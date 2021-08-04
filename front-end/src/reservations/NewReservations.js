@@ -41,8 +41,8 @@ function NewReservationPage() {
       resErrors.push({ message: `Test. Reservation must be made for a time and date in the future` });
     }
 
-    // Check if reservation time is between 9:30am and 9"30pm"
-    if (resTime < 1030 || resTime > 2130) {
+    // Check if reservation time is between 9:30am and 9:30pm"
+    if (resTime < 930 || resTime > 2130) {
       resErrors.push({ message: `Test. Reservations can only be made for between 9:30AM and 9:30PM. The restaurant closes at 10:30PM.` })
     }
     return resErrors;
@@ -56,9 +56,9 @@ function NewReservationPage() {
         return
       }
 
-      await createReservation(reservation)
+      const result = await createReservation(reservation)
       setReservation({ ...initialReservationState })
-      history.push("/");
+      history.push(`/dashboard?date=${result.reservation_date}`);
     }
     catch (err) {
       setReservationErrors([err])

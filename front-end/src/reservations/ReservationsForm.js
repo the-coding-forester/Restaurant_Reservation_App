@@ -23,7 +23,7 @@ function ReservationForm({
   const handleMobileNumberChange = (event) => {
     onReservationChanged({
       ...reservation,
-      mobile_number: event.target.value,
+      mobile_number: (event.target.value).replace(/[^0-9,.]+/g, ""),
     });
   };
 
@@ -96,7 +96,7 @@ function ReservationForm({
           required
           pattern="([0-9]{3})?[0-9]{3}[0-9]{4}"
           placeholder="1234567890"
-          maxLength="12"
+          maxLength="10"
           onChange={handleMobileNumberChange}
           value={reservation.mobile_number}
         />

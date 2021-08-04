@@ -140,10 +140,10 @@ const reservationForResHours = (req, res, next) => {
   //splice to make format HHMM and never HHMMSS
   const resTime = Number(reservation_time.slice(0, 2) + reservation_time.slice(3, 5));
 
-  if (resTime < 930 || resTime > 2130) {
+  if (resTime < 1030 || resTime > 2130) {
     return next({
       status: 400,
-      message: `Reservation_time must be between 9:30AM and 9:30PM. The restaurant closes at 10:30PM.`
+      message: `Reservation_time must be between 10:30AM and 9:30PM. The restaurant closes at 10:30PM.`
     })
   }
   next();

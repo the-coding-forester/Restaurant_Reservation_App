@@ -33,17 +33,17 @@ function NewReservationPage() {
 
     // Check if date is on a Tuesday
     if (resDate.getUTCDay() === 2) {
-      resErrors.push({ message: `Test. Restaurant closed on Tuesdays` });
+      resErrors.push({ message: `Restaurant closed on Tuesdays` });
     }
 
     // Check if date is in the
     if (resDateAndTime < today) {
-      resErrors.push({ message: `Test. Reservation must be made for a time and date in the future` });
+      resErrors.push({ message: `Reservation must be made for a time and date in the future` });
     }
 
     // Check if reservation time is between 9:30am and 9:30pm"
-    if (resTime < 930 || resTime > 2130) {
-      resErrors.push({ message: `Test. Reservations can only be made for between 9:30AM and 9:30PM. The restaurant closes at 10:30PM.` })
+    if (resTime < 1030 || resTime > 2130) {
+      resErrors.push({ message: `Reservations can only be made for between 10:30AM and 9:30PM. The restaurant closes at 10:30PM.` })
     }
     return resErrors;
   }

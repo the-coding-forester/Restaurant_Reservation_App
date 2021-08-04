@@ -69,7 +69,6 @@ const hasValidName = (req, res, next) => {
 // Check if capacity is at least one
 const hasValidCapacity = (req, res, next) => {
   const { capacity } = req.body.data;
-  console.log(capacity)
 
   // check that capacity is a number AND greater than 0
   if (capacity > 0 && Number.isInteger(capacity)) {
@@ -111,6 +110,13 @@ const read = async (req, res) => {
   res.json({ data });
 }
 
+const updateSeatReservation = async (req, res) => {
+  const { reservation_id } = req.body.data;
+  const table_id = req.params.tableId;
+  const data = await service.updateSeatReservation(reservation_id, table_id);
+  res.json({ data });
+}
+
 module.exports = {
   create: [
     hasOnlyValidProperties,
@@ -123,5 +129,10 @@ module.exports = {
   read: [
     asyncErrorBoundary(tableExists),
     asyncErrorBoundary(read),
+  ],
+  updateSeatReservation: [
+    hasOnlyValidProperties,
+    hasRequiredProperties,
+    asyncErrorBoundary(updateSeatReservation),
   ],
 }

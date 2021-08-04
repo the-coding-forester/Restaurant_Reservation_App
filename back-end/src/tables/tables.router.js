@@ -15,6 +15,7 @@ router
 
 router
   .route("/:tableId/seat")
+  .put(controller.updateSeatReservation)
   .all(methodNotAllowed);
 
 module.exports = router;

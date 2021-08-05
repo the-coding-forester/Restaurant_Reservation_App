@@ -30,7 +30,7 @@ function ReservationForm({
   const handlePeopleChange = (event) => {
     onReservationChanged({
       ...reservation,
-      people: Number(event.target.value),
+      people: event.target.value,
     });
   };
 
@@ -105,7 +105,7 @@ function ReservationForm({
         <label htmlFor="people">Party size</label>
         <input
           id="people"
-          type="text"
+          type="number"
           name="people"
           className="form-control"
           required

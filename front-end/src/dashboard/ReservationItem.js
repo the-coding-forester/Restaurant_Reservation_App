@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function ReservationItem({ reservation, onCancelReservation }) {
+
   const handleCancel = () => {
     // display confirm dialog and allow cancel
     const doesConfirm = window.confirm("Are you sure you want to cancel?");
@@ -11,12 +12,22 @@ function ReservationItem({ reservation, onCancelReservation }) {
     }
     onCancelReservation(reservation);
   }
+
   return (
     <tr>
       <td> {reservation.reservation_time}</td>
       <td>{reservation.last_name}</td>
       <td>{reservation.first_name}</td>
       <td> {reservation.people}</td>
+      <td>
+        <Link
+          to={`/reservations/${reservation.id}/seat`}
+          className="btn btn-secondary mr-2 btn-sm"
+          title="Seat"
+        >
+          Seat
+        </Link>
+      </td>
       <td>
         <Link
           to={`/reservations/${reservation.id}/edit`}

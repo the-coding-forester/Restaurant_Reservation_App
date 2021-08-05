@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { next, previous, today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
 import ReservationList from "./ReservationList";
+import TableList from "./TableList";
 
 
 function Dashboard() {
@@ -30,7 +31,6 @@ function Dashboard() {
     <main>
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
-        <br />
         <div className="container">
           <h4 className="row">Reservations for {date.slice(0, 10)}</h4>
           <div className="row">
@@ -43,6 +43,12 @@ function Dashboard() {
       <ul className="list-group my-2">
         <ReservationList date={date} />
       </ul>
+      <div className="container">
+        <h4 className="row">Tables</h4>
+        <ul className="list-group my-2">
+          <TableList />
+        </ul>
+      </div>
     </main>
   )
 }

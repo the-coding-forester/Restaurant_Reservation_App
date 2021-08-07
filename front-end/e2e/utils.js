@@ -7,7 +7,7 @@ async function selectOptionByText(page, name, optionText) {
     await optionWaned.getProperty("value")
   ).jsonValue();
 
-  return await page.select(`[name=${name}`, optionValue);
+  return await page.select(`[name="${name}"`, optionValue);   //Had to but quotes around the selector, the test was bugging out
 }
 
 function containsText(page, selector, expected) {

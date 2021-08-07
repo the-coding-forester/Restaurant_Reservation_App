@@ -2,6 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function TableItem({ table, onDeleteTable }) {
+  let status = "Free"
+  if (table.occupied) {
+    status = "Occupied";
+  } else {
+    status = "Free";
+  }
 
   const handleDelete = () => {
     // display confirm dialog and allow cancel
@@ -16,7 +22,7 @@ function TableItem({ table, onDeleteTable }) {
     <tr>
       <td> {table.table_name}</td>
       <td>{table.capacity}</td>
-      <td>{table.status}</td>
+      <td>{status}</td>
       <td>
         <Link
           to={`/reservations/${table.id}/edit`}

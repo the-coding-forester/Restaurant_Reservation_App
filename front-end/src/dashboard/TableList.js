@@ -9,9 +9,14 @@ function TableList() {
   const [tablesErrors, setTablesErrors] = useState(null);
 
   useEffect(() => {
-    listTables()
-      .then((data) => setTables(data))
-      .catch(setTablesErrors)
+    (async () => {
+      try {
+        const result = await listTables({});
+        setTables(result)
+      } catch (err) {
+        setTablesErrors(err)
+      }
+    })();
   }, [])
 
 
@@ -30,7 +35,7 @@ function TableList() {
         <tbody>
           {tables.map((table) => (
             <TableItem
-              key={table.id}
+              key={table.table_id}
               table={table}
             />
           ))}

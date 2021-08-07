@@ -40,7 +40,7 @@ function ReservationList({ date }) {
         <tbody>
           {reservations.map((reservation) => (
             <ReservationItem
-              key={reservation.id}
+              key={reservation.reservation_id}
               reservation={reservation}
             />
           ))}

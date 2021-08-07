@@ -30,7 +30,7 @@ function ReservationForm({
   const handlePeopleChange = (event) => {
     onReservationChanged({
       ...reservation,
-      people: event.target.value,
+      people: Number(event.target.value),
     });
   };
 

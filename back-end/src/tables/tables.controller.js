@@ -138,16 +138,30 @@ const hasSufficientCapacity = async (req, res, next) => {
   next();
 }
 
-// Checks if table is occupied
-function tableVacant(req, res, next) {
+// Checks if table is vacant
+const tableIsVacant = (req, res, next) => {
   const table = res.locals.table;
   if (!table.reservation_id) {
     return next();
   }
+
   next({
     status: 400,
     message: `table_id '${table.table_id}' is occupied by reservation_id '${table.reservation_id}'.`,
   });
+}
+
+// Checks if table is occupied
+const tableIsOccupied = (req, res, next) => {
+  const table = res.locals.table;
+  if (table.reservation_id) {
+    return next();
+  }
+
+  next({
+    status: 400,
+    message: `table_id '${table.table_id}' is not occupied.`,
+  })
 }
 
 // CRUD FUNCTIONS
@@ -178,6 +192,17 @@ const update = async (req, res) => {
   res.status(200).json({ data });
 }
 
+const finishReservation = async (req, res) => {
+  const table_id = req.params.tableId;
+  const updatedTable = {
+    reservation_id: null,
+    occupied: false,
+    table_id,
+  }
+  const data = await service.update(updatedTable);
+  res.status(200).json({ data });
+}
+
 module.exports = {
   create: [
     hasData,
@@ -198,7 +223,12 @@ module.exports = {
     asyncErrorBoundary(tableExists),
     asyncErrorBoundary(reservationIdExists),
     asyncErrorBoundary(hasSufficientCapacity),
-    tableVacant,
+    tableIsVacant,
     asyncErrorBoundary(update),
-  ]
+  ],
+  delete: [
+    asyncErrorBoundary(tableExists),
+    tableIsOccupied,
+    asyncErrorBoundary(finishReservation),
+  ],
 }

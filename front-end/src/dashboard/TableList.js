@@ -7,6 +7,7 @@ import TableItem from "./TableItem";
 function TableList() {
   const [tables, setTables] = useState([]);
   const [tablesErrors, setTablesErrors] = useState(null);
+  const [updatedTableSeat, setUpdatedTableSeat] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -17,16 +18,11 @@ function TableList() {
         setTablesErrors(err)
       }
     })();
-  }, [])
+  }, [updatedTableSeat])
 
   const onUpdateTable = (updatedTable) => {
-    const updatedList = tables.map((table) => {
-      if (table.table_id === updatedTable.table_id) {
-        return updatedTable;
-      }
-      return table;
-    })
-    setTables(updatedList);
+
+    setUpdatedTableSeat(updatedTable);
   }
 
   return (

@@ -44,4 +44,5 @@ module.exports = {
   read,
   list,
   listReservationsByDay,
+  update,
 };

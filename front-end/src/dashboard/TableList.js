@@ -19,6 +19,15 @@ function TableList() {
     })();
   }, [])
 
+  const onUpdateTable = (updatedTable) => {
+    const updatedList = tables.map((table) => {
+      if (table.table_id === updatedTable.table_id) {
+        return updatedTable;
+      }
+      return table;
+    })
+    setTables(updatedList);
+  }
 
   return (
     <div>
@@ -28,8 +37,9 @@ function TableList() {
             <th scope="col">Table Name</th>
             <th scope="col">Capacity</th>
             <th scope="col">Status</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
+            <th scope="col">Finish</th>
+            {/* <th scope="col">Edit</th>
+            <th scope="col">Delete</th> */}
           </tr>
         </thead>
         <tbody>
@@ -37,6 +47,7 @@ function TableList() {
             <TableItem
               key={table.table_id}
               table={table}
+              onUpdateTable={onUpdateTable}
             />
           ))}
         </tbody>

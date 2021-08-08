@@ -226,7 +226,7 @@ module.exports = {
     tableIsVacant,
     asyncErrorBoundary(update),
   ],
-  delete: [
+  finishReservation: [
     asyncErrorBoundary(tableExists),
     tableIsOccupied,
     asyncErrorBoundary(finishReservation),

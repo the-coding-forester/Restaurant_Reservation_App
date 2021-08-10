@@ -222,11 +222,16 @@ const create = async (req, res) => {
 }
 
 const list = async (req, res) => {
-  const date = new Date(req.query.date);
+  const { date, mobile_number } = req.query;
 
   if (date) {
     const data = await service.listReservationsByDay(date);
     res.json({ data });
+
+  } else if (mobile_number) {
+    const data = await service.search(mobile_number);
+    res.json({ data });
+
   } else {
     const data = await service.list();
     res.json({ data });
@@ -252,6 +257,7 @@ const destroy = async (req, res) => {
   await service.delete(reservation.reservation_id);
   res.sendStatus(204);
 }
+
 
 module.exports = {
   create: [
@@ -289,4 +295,4 @@ module.exports = {
     statusIsKnown,
     asyncErrorBoundary(update),
   ],
-};
+}

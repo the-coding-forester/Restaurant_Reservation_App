@@ -4,6 +4,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import NotFound from "../Errors/NotFound";
 import NewReservationPage from "../reservations/NewReservations";
+import SearchByMobile from "../searchByMobile/SearchByMobile";
 import SeatReservationPage from "../seatReservation/SeatReservation";
 import NewTablePage from "../tables/NewTables"
 import { today } from "../utils/date-time";
@@ -40,6 +41,9 @@ function Routes() {
           </Route>
           <Route path="/tables/new">
             <NewTablePage />
+          </Route>
+          <Route path="/search">
+            <SearchByMobile />
           </Route>
           <Route>
             <NotFound />

@@ -7,6 +7,6 @@ exports.up = function (knex) {
 
 exports.down = function (knex) {
   return knex.schema.table("reservations", (table) => {
-    table.string("status").nullable().defaultTo(null).alter();
+    table.dropColumn("status");
   });
 };

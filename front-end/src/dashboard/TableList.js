@@ -1,29 +1,8 @@
-import { useEffect, useState } from "react";
 import ErrorAlert from "../Errors/ErrorAlert";
-import { listTables } from "../utils/api";
 import TableItem from "./TableItem";
 
 
-function TableList() {
-  const [tables, setTables] = useState([]);
-  const [tablesErrors, setTablesErrors] = useState(null);
-  const [updatedTableSeat, setUpdatedTableSeat] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const result = await listTables({});
-        setTables(result)
-      } catch (err) {
-        setTablesErrors(err)
-      }
-    })();
-  }, [updatedTableSeat])
-
-  const onUpdateTable = (updatedTable) => {
-
-    setUpdatedTableSeat(updatedTable);
-  }
+function TableList({ tables, tablesErrors, onUpdateTable }) {
 
   return (
     <div>

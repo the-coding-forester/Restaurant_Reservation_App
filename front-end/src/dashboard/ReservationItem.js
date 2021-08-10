@@ -20,15 +20,19 @@ function ReservationItem({ reservation, onCancelReservation }) {
       <td>{reservation.last_name}</td>
       <td>{reservation.first_name}</td>
       <td> {reservation.people}</td>
-      <td>{reservation.status}</td>
+      <td data-reservation-id-status={reservation.reservation_id}>
+        {reservation.status}
+      </td>
       <td>
-        <Link
-          to={`/reservations/${reservation_id}/seat`}
-          className="btn btn-secondary mr-2 btn-sm"
-          title="Seat"
-        >
-          Seat
-        </Link>
+        {reservation.status === "seated" ? null :
+          <Link
+            to={`/reservations/${reservation_id}/seat`}
+            className="btn btn-secondary mr-2 btn-sm"
+            title="Seat"
+          >
+            Seat
+          </Link>
+        }
       </td>
       <td>
         <Link

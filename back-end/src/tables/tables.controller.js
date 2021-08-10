@@ -1,3 +1,5 @@
+const knex = require('../db/connection');
+
 const service = require("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties")
@@ -164,6 +166,20 @@ const tableIsOccupied = (req, res, next) => {
   })
 }
 
+// Checks if reservation is waiting to be seated
+const notSeated = async (req, res, next) => {
+  const { reservation_id } = req.body.data;
+  const reservation = await reservationsService.read(reservation_id);
+
+  if (reservation.status !== "seated") {
+    return next()
+  }
+  next({
+    status: 400,
+    message: `Reservation already seated.`
+  })
+}
+
 // CRUD FUNCTIONS
 
 const create = async (req, res) => {
@@ -182,25 +198,61 @@ const read = async (req, res) => {
 }
 
 const update = async (req, res) => {
-  const table_id = req.params.tableId;
-  const updatedTable = {
-    reservation_id: req.body.data.reservation_id,
-    occupied: true,
-    table_id,
+  const transaction = await knex.transaction();
+
+  try {
+    const table_id = req.params.tableId;
+    const { reservation_id } = req.body.data;
+
+
+    const [data] = await Promise.all([
+      service.update({
+        reservation_id,
+        occupied: true,
+        table_id,
+      }, transaction),
+      reservationsService.update({
+        reservation_id,
+        status: 'seated',
+      }, transaction),
+    ]);
+
+    await transaction.commit();
+
+    res.status(200).json({ data });
+  } catch (err) {
+    transaction.rollback();
+
+    throw err;
   }
-  const data = await service.update(updatedTable);
-  res.status(200).json({ data });
 }
 
 const finishReservation = async (req, res) => {
-  const table_id = req.params.tableId;
-  const updatedTable = {
-    reservation_id: null,
-    occupied: false,
-    table_id,
+  const transaction = await knex.transaction();
+
+  try {
+    const table_id = req.params.tableId;
+
+    const [data] = await Promise.all([
+      service.update({
+        reservation_id: null,
+        occupied: false,
+        table_id,
+      }, transaction),
+      reservationsService.update({
+        reservation_id: res.locals.table.reservation_id,
+        status: 'finished',
+      }, transaction),
+    ]);
+
+    await transaction.commit();
+
+    res.status(200).json({ data });
+  } catch (err) {
+    await transaction.rollback();
+
+    throw err;
   }
-  const data = await service.update(updatedTable);
-  res.status(200).json({ data });
 }
 
 module.exports = {
@@ -224,6 +276,7 @@ module.exports = {
     asyncErrorBoundary(reservationIdExists),
     asyncErrorBoundary(hasSufficientCapacity),
     tableIsVacant,
+    notSeated,
     asyncErrorBoundary(update),
   ],
   finishReservation: [

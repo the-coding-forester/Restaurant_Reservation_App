@@ -19,20 +19,20 @@ function read(reservation_id) {
 // List reservations
 function list() {
   return knex("reservations")
-    .select("*");
+    .whereNot({ status: "finished" })
 }
 
 // List reservations on date
 function listReservationsByDay(reservation_date) {
   return knex("reservations")
-    .select("*")
-    .where({ reservation_date: reservation_date })
+    .whereNot({ status: "finished" })
+    .andWhere({ reservation_date: reservation_date })
     .orderBy("reservation_time")
 }
 
 // Update Reservation
-function update(updatedReservation) {
-  return knex("reservations")
+function update(updatedReservation, transaction = knex) {
+  return transaction("reservations")
     .select("*")
     .where({ reservation_id: updatedReservation.reservation_id })
     .update(updatedReservation, "*")

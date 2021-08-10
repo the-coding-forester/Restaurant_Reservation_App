@@ -20,6 +20,7 @@ function ReservationItem({ reservation, onCancelReservation }) {
       <td>{reservation.last_name}</td>
       <td>{reservation.first_name}</td>
       <td> {reservation.people}</td>
+      <td>{reservation.status}</td>
       <td>
         <Link
           to={`/reservations/${reservation_id}/seat`}

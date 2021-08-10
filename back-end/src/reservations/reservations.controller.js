@@ -149,6 +149,71 @@ const reservationForResHours = (req, res, next) => {
   next();
 }
 
+// Checks if reservation status is seated OR finished
+const statusIsSeatedOrFinished = (req, res, next) => {
+  const { status } = req.body.data
+
+  if (status === "seated") {
+    return next({
+      status: 400,
+      message: `Reservation status is seated.`
+    })
+  }
+  if (status === "finished") {
+    return next({
+      status: 400,
+      message: `Reservation status is finished.`
+    })
+  }
+  next();
+}
+
+// Checks status if status is known (booked, seated, or finished)
+const statusIsKnown = (req, res, next) => {
+  const { status } = req.body.data
+
+  if (status === "booked" || status === "seated" || status === "finished") {
+    return next()
+  }
+  next({
+    status: 400,
+    message: `Reservation status is unknown, status should be "booked, 'seated', or 'finished'.`
+  })
+}
+
+// Check if status is finished
+const statusIsFinished = (req, res, next) => {
+  const { status } = res.locals.reservation;
+
+  if (status === "finished") {
+    return next({
+      status: 400,
+      message: `Status is "finished".`
+    })
+  }
+  next();
+}
+
+const hasRequiredStatus = hasProperties(["status"]);
+
+const hasOnlyValidStatus = (req, res, next) => {
+  const { data = {} } = req.body;
+
+  const statusField = ["status"]
+
+  const invalidFields = Object.keys(data).filter(
+    (field) => !statusField.includes(field)
+  );
+
+  if (invalidFields.length) {
+    return next({
+      status: 400,
+      message: `Invalid field(s): ${invalidFields.join(", ")}`,
+    });
+  }
+  next();
+}
+
 // CRUD Functions
 
 const create = async (req, res) => {
@@ -179,10 +244,10 @@ const update = async (req, res) => {
     reservation_id: res.locals.reservation.reservation_id,
   };
   const data = await service.update(updatedReservation);
-  res.json({ data });
+  res.status(200).json({ data })
 }
 
-async function destroy(req, res) {
+const destroy = async (req, res) => {
   const { reservation } = res.locals;
   await service.delete(reservation.reservation_id);
   res.sendStatus(204);
@@ -198,6 +263,7 @@ module.exports = {
     reservationNotForTuesday,
     reservationForFutureDate,
     reservationForResHours,
+    statusIsSeatedOrFinished,
     asyncErrorBoundary(create)
   ],
   list: asyncErrorBoundary(list),
@@ -214,5 +280,13 @@ module.exports = {
   ],
   delete: [
     asyncErrorBoundary(destroy)
+  ],
+  updateStatus: [
+    asyncErrorBoundary(reservationExists),
+    hasOnlyValidStatus,
+    hasRequiredStatus,
+    statusIsFinished,
+    statusIsKnown,
+    asyncErrorBoundary(update),
   ],
 };

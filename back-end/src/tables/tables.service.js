@@ -1,4 +1,3 @@
-const { select } = require("../db/connection");
 const knex = require("../db/connection");
 
 // Create table
@@ -55,12 +54,12 @@ function readTableByReservation(reservation_id) {
 }
 
 // Update tables
-function update(updatedTable) {
-  return knex("tables")
+async function update(updates, transaction = knex) {
+  return transaction("tables")
     .select("*")
-    .where({ table_id: updatedTable.table_id })
-    .update(updatedTable, "*")
-    .then((updatedTable) => updatedTable[0]);
+    .where({ table_id: updates.table_id })
+    .update(updates, "*")
+    .then((results) => results[0]);
 }
 
 module.exports = {

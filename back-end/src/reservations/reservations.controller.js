@@ -14,7 +14,10 @@ const VALID_PROPERTIES = [
   "reservation_date",
   "reservation_time",
   "people",
-  "status"
+  "status",
+  "reservation_id",
+  "created_at",
+  "updated_at",
 ];
 
 const REQUIRED_PROPERTIES = [
@@ -172,7 +175,12 @@ const statusIsSeatedOrFinished = (req, res, next) => {
 const statusIsKnown = (req, res, next) => {
   const { status } = req.body.data
 
-  if (status === "booked" || status === "seated" || status === "finished") {
+  if (
+    status === "booked" ||
+    status === "seated" ||
+    status === "finished" ||
+    status === "cancelled"
+  ) {
     return next()
   }
   next({
@@ -279,9 +287,15 @@ module.exports = {
   ],
   update: [
     asyncErrorBoundary(reservationExists),
-    hasValidDate,
     hasOnlyValidProperties,
     hasRequiredProperties,
+    hasValidDate,
+    hasValidTime,
+    hasValidNumberPeople,
+    reservationNotForTuesday,
+    reservationForFutureDate,
+    reservationForResHours,
+    statusIsSeatedOrFinished,
     asyncErrorBoundary(update)
   ],
   delete: [

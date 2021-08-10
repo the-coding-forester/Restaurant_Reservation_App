@@ -26,7 +26,7 @@ function list() {
 function listReservationsByDay(reservation_date) {
   return knex("reservations")
     .whereNot({ status: "finished" })
-    .andWhere({ reservation_date: reservation_date })
+    .andWhere({ reservation_date })
     .orderBy("reservation_time")
 }
 

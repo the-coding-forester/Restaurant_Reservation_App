@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { listReservations, listTables } from "../utils/api";
 import { next, previous, today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
 import ReservationList from "./ReservationList";
 import TableList from "./TableList";
-import { listReservations } from "../utils/api";
-import { listTables } from "../utils/api";
 
 
 function Dashboard() {
@@ -76,7 +75,6 @@ function Dashboard() {
       </div>
       <ul className="list-group my-2">
         <ReservationList
-          date={date}
           reservations={reservations}
           reservationsError={reservationsError}
         />

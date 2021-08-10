@@ -9,6 +9,7 @@ import TableList from "./TableList";
 function Dashboard() {
   const query = useQuery();
   const queryDate = query.get("date")
+
   const [date, setDate] = useState(queryDate || today)
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);

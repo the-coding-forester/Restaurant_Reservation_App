@@ -11,6 +11,7 @@ function TableItem({ table, onUpdateTable }) {
     }
     const res = await finishReservation(table.table_id);
     onUpdateTable(res);
+
   }
 
   // const handleDelete = () => {

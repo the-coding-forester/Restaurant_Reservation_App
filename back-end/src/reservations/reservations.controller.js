@@ -222,7 +222,7 @@ const create = async (req, res) => {
 }
 
 const list = async (req, res) => {
-  const { date } = req.query;
+  const date = new Date(req.query.date);
 
   if (date) {
     const data = await service.listReservationsByDay(date);

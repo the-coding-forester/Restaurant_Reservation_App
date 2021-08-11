@@ -15,7 +15,7 @@ function Menu() {
   return (
     <nav className="sticky-top shadow-lg navbar navbar-dark mb-2 px-2 blur-behind">
       <Link to="/" className="navbar-brand">
-        <span className="brand">periodic tables</span>
+        <title>periodic tables</title>
       </Link>
       <button
         className="navbar-toggler ml-auto"

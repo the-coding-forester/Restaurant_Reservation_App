@@ -67,7 +67,7 @@ function Dashboard() {
 
   return (
     <main>
-      <h1> Periodic Tables</h1>
+      <h1> Dashboard</h1>
       <div className="d-md-flex mb-3">
         <div className="container">
           <h4 className="row">Reservations for {date.slice(0, 10)}</h4>

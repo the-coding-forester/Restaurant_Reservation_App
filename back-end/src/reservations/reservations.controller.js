@@ -190,7 +190,7 @@ const statusIsKnown = (req, res, next) => {
 }
 
 // Check if status is finished
-const statusIsFinished = (req, res, next) => {
+const statusIsFinishedOrCancelled = (req, res, next) => {
   const { status } = res.locals.reservation;
 
   if (status === "finished") {
@@ -199,7 +199,25 @@ const statusIsFinished = (req, res, next) => {
       message: `Status is "finished".`
     })
   }
+  if (status === "cancelled") {
+    return next({
+      status: 400,
+      message: `Status is "cancelled".`
+    })
+  }
   next();
+}
+
+const statusIsBooked = (req, res, next) => {
+  const { status } = res.locals.reservation;
+
+  if (status === "booked") {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `Only "booked" reservations may be edited`
+  })
 }
 
 const hasRequiredStatus = hasProperties(["status"]);
@@ -296,6 +314,7 @@ module.exports = {
     reservationForFutureDate,
     reservationForResHours,
     statusIsSeatedOrFinished,
+    statusIsBooked,
     asyncErrorBoundary(update)
   ],
   delete: [
@@ -305,7 +324,7 @@ module.exports = {
     asyncErrorBoundary(reservationExists),
     hasOnlyValidStatus,
     hasRequiredStatus,
-    statusIsFinished,
+    statusIsFinishedOrCancelled,
     statusIsKnown,
     asyncErrorBoundary(update),
   ],

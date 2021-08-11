@@ -24,7 +24,7 @@ function SearchByMobile() {
 
   return (
     <div className="SearchByMobile">
-      <h1>Search</h1>
+      <h1><span className="oi oi-magnifying-glass"> Search</span></h1>
       <form className="search-form">
         <label className="form-label form-control-lg" htmlFor="mobile_number">
           Phone Number

@@ -70,9 +70,10 @@ function ReservationForm({
           name="first_name"
           className="form-control"
           required
-          placeholder="First Name"
+          placeholder={"First Name"}
           onChange={handleFirstNameChange}
-          value={reservation.first_name} />
+          defaultValue={reservation.first_name}
+        />
       </div>
       <div className="form-group">
         <label htmlFor="last_name">Last name</label>
@@ -82,9 +83,10 @@ function ReservationForm({
           name="last_name"
           className="form-control"
           required
-          placeholder="Last Name"
+          placeholder={"Last Name"}
           onChange={handleLastNameChange}
-          value={reservation.last_name} />
+          defaultValue={reservation.last_name}
+        />
       </div>
       <div className="form-group">
         <label htmlFor="mobile_number">Mobile Number</label>
@@ -94,11 +96,11 @@ function ReservationForm({
           name="mobile_number"
           className="form-control"
           required
-          pattern="([0-9]{3})?[0-9]{3}[0-9]{4}"
-          placeholder="1234567890"
-          maxLength="10"
+          pattern="([0-9]{3}(|-))?([0-9]{3}-[0-9]{4}|[0-9]{3}[0-9]{4})"
+          placeholder={"1234567890"}
+          maxLength="12"
           onChange={handleMobileNumberChange}
-          value={reservation.mobile_number}
+          defaultValue={reservation.mobile_number}
         />
       </div>
       <div className="form-group">
@@ -109,9 +111,10 @@ function ReservationForm({
           name="people"
           className="form-control"
           required
-          placeholder="Party Size"
+          placeholder={"Party Size"}
           onChange={handlePeopleChange}
-          value={reservation.people} />
+          defaultValue={reservation.people}
+        />
       </div>
       <div className="form-group">
         <label htmlFor="reservation_date">Reservation Date</label>
@@ -121,10 +124,11 @@ function ReservationForm({
           name="reservation_date"
           className="form-control"
           required
-          placeholder="YYYY-MM-DD"
+          placeholder={"YYYY-MM-DD"}
           pattern="\d{4}-\d{2}-\d{2}"
           onChange={handleReservationDateChange}
-          value={reservation.reservation_date} />
+          defaultValue={reservation.reservation_date}
+        />
       </div>
       <div className="form-group">
         <label htmlFor="reservation_time">Reservation Time</label>
@@ -134,19 +138,23 @@ function ReservationForm({
           name="reservation_time"
           className="form-control"
           required
-          placeholder="HH:MM"
           pattern="[0-9]{2}:[0-9]{2}"
           onChange={handleReservationTimeChange}
-          value={reservation.reservation_time} />
+          defaultValue={reservation.reservation_time}
+        />
       </div>
       <button
         type="button"
         className="btn btn-secondary mr-2"
         onClick={handleClickCancel}
       >
-        Cancel
+        <span aria-hidden="true">&times; Cancel</span>
       </button>
-      <button type="submit" className="btn btn-primary">Submit</button>
+      <button
+        type="submit"
+        className="btn btn-primary">
+        <span className="oi oi-book"> Submit</span>
+      </button>
     </form>
   )
 }

@@ -13,8 +13,6 @@ function TableList({ tables, tablesErrors, onUpdateTable }) {
             <th scope="col">Capacity</th>
             <th scope="col">Status</th>
             <th scope="col">Finish</th>
-            {/* <th scope="col">Edit</th>
-            <th scope="col">Delete</th> */}
           </tr>
         </thead>
         <tbody>

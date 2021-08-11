@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import ErrorAlert from "../Errors/ErrorAlert";
 import { createReservation } from "../utils/api";
+import validateForms from "../utils/validateForms";
 import ReservationForm from "./ReservationsForm";
 
 function NewReservationPage() {
@@ -23,34 +24,9 @@ function NewReservationPage() {
   const [reservationsErrors, setReservationErrors] = useState([]);
 
 
-  const getFormErrors = () => {
-    const resDate = new Date(reservation.reservation_date)
-    const resDateAndTime = new Date(reservation.reservation_date + ' ' + reservation.reservation_time).getTime();
-    const today = Date.now();
-    const resTime = Number(reservation.reservation_time.replace(/:/g, ''));
-
-    const resErrors = [];
-
-    // Check if date is on a Tuesday
-    if (resDate.getUTCDay() === 2) {
-      resErrors.push({ message: `Restaurant closed on Tuesdays` });
-    }
-
-    // Check if date is in the
-    if (resDateAndTime < today) {
-      resErrors.push({ message: `Reservation must be made for a time and date in the future` });
-    }
-
-    // Check if reservation time is between 9:30am and 9:30pm"
-    if (resTime < 1030 || resTime > 2130) {
-      resErrors.push({ message: `Reservations can only be made for between 10:30AM and 9:30PM. The restaurant closes at 10:30PM.` })
-    }
-    return resErrors;
-  }
-
   const handleCreateReservation = async () => {
     try {
-      const errors = getFormErrors();
+      const errors = validateForms(reservation);
       if (errors.length) {
         setReservationErrors(errors)
         return

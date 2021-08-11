@@ -16,6 +16,7 @@ function Dashboard() {
   const [tables, setTables] = useState([]);
   const [tablesErrors, setTablesErrors] = useState(null);
   const [updatedTableSeat, setUpdatedTableSeat] = useState(null);
+  const [cancelledReservation, setCancelledReservation] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -26,7 +27,7 @@ function Dashboard() {
         setReservationsError(err)
       }
     })();
-  }, [date, tables])
+  }, [date, tables, cancelledReservation])
 
   useEffect(() => {
     (async () => {
@@ -40,8 +41,11 @@ function Dashboard() {
   }, [updatedTableSeat])
 
   const onUpdateTable = (updatedTable) => {
-
     setUpdatedTableSeat(updatedTable);
+  }
+
+  const onCancelReservation = (cancelledReservation) => {
+    setCancelledReservation(cancelledReservation);
   }
 
   const toggleToPrevious = (event) => {
@@ -63,7 +67,7 @@ function Dashboard() {
 
   return (
     <main>
-      <h1>Dashboard</h1>
+      <h1> Periodic Tables</h1>
       <div className="d-md-flex mb-3">
         <div className="container">
           <h4 className="row">Reservations for {date.slice(0, 10)}</h4>
@@ -78,6 +82,7 @@ function Dashboard() {
         <ReservationList
           reservations={reservations}
           reservationsError={reservationsError}
+          onCancelReservation={onCancelReservation}
         />
       </ul>
       <div className="container">

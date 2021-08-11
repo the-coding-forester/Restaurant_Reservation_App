@@ -20,12 +20,14 @@ function read(reservation_id) {
 function list() {
   return knex("reservations")
     .whereNot({ status: "finished" })
+    .whereNot({ status: "cancelled" })
 }
 
 // List reservations on date
 function listReservationsByDay(reservation_date) {
   return knex("reservations")
     .whereNot({ status: "finished" })
+    .whereNot({ status: "cancelled" })
     .andWhere({ reservation_date })
     .orderBy("reservation_time")
 }

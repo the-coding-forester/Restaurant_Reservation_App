@@ -1,7 +1,7 @@
 import ErrorAlert from "../Errors/ErrorAlert";
 import ReservationItem from "./ReservationItem";
 
-function ReservationList({ reservations, reservationsError }) {
+function ReservationList({ reservations, reservationsError, onCancelReservation }) {
 
   return (
     <div>
@@ -23,6 +23,7 @@ function ReservationList({ reservations, reservationsError }) {
             <ReservationItem
               key={reservation.reservation_id}
               reservation={reservation}
+              onCancelReservation={onCancelReservation}
             />
           ))}
         </tbody>

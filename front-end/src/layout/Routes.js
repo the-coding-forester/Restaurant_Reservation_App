@@ -2,6 +2,7 @@ import React from "react";
 
 import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
+import EditReservation from "../editReservation/EditReservation";
 import NotFound from "../Errors/NotFound";
 import NewReservationPage from "../reservations/NewReservations";
 import SearchByMobile from "../searchByMobile/SearchByMobile";
@@ -32,6 +33,9 @@ function Routes() {
           </Route>
           <Route path="/reservations/new">
             <NewReservationPage />
+          </Route>
+          <Route path="/reservations/:reservation_id/edit">
+            <EditReservation />
           </Route>
           <Route path="/reservations/:reservation_id/seat">
             <SeatReservationPage />

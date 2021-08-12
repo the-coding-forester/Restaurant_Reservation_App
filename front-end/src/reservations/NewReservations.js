@@ -24,23 +24,30 @@ function NewReservationPage() {
   const [reservationsErrors, setReservationErrors] = useState([]);
 
 
+  //Handles creating reservation
   const handleCreateReservation = async () => {
+    const abortController = new AbortController();
+
     try {
       const errors = validateForms(reservation);
       if (errors.length) {
         setReservationErrors(errors)
         return
       }
-
-      const result = await createReservation(reservation)
+      const result = await createReservation(reservation, abortController.signal)
       setReservation({ ...initialReservationState })
       history.push(`/dashboard?date=${result.reservation_date}`);
+
     }
     catch (err) {
       setReservationErrors([err])
     }
+
+    return () => abortController.abort();
+
   }
 
+  // Handles canceling creating a reservation & resets form
   const handleCancelReservation = async () => {
     setReservation({ ...initialReservationState })
     history.goBack();

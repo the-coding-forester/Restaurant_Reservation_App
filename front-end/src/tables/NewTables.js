@@ -16,6 +16,7 @@ function NewTablePage() {
   const [table, setTable] = useState({ ...initialTableState })
   const [tableErrors, setTableErrors] = useState([]);
 
+  // Table Form Validation
   const getFormErrors = () => {
     const tableErrors = []
 
@@ -31,7 +32,10 @@ function NewTablePage() {
     return tableErrors
   }
 
+  // Handle create table
   const handleCreateTable = async () => {
+    const abortController = new AbortController();
+
     try {
       const errors = getFormErrors();
       if (errors.length) {
@@ -39,15 +43,19 @@ function NewTablePage() {
         return
       }
 
-      await createTable(table)
+      await createTable(table, abortController.signal)
       setTable({ ...initialTableState })
       history.push(`/dashboard`)
     }
     catch (err) {
       setTableErrors([err])
     }
+
+    return () => abortController.abort();
+
   }
 
+  // Handle canceling create new table
   const handleCancelTable = () => {
     setTable({ ...initialTableState })
     history.goBack();

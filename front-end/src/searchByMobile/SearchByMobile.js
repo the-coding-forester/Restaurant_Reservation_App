@@ -8,17 +8,22 @@ function SearchByMobile() {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
+  // Sets state on change
   const onChange = (event) => setInput(event.target.value)
 
+  // Handles submit
   const handleClickFind = async (event) => {
     event.preventDefault();
+    const abortController = new AbortController();
 
     try {
-      const results = await listReservations({ mobile_number: input })
+      const results = await listReservations({ mobile_number: input }, abortController.signal)
       setReservations(results)
     } catch (err) {
       setReservationsError(err)
     };
+
+    return () => abortController.abort();
 
   };
 

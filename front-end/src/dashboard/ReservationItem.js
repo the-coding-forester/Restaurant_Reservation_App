@@ -9,17 +9,25 @@ import { cancelReservation } from "../utils/api";
 function ReservationItem({ reservation, onCancelReservation }) {
   const reservation_id = reservation.reservation_id;
 
+  // Handles canceling reservation
   const handleCancel = async () => {
+    const abortController = new AbortController();
+
     // display confirm dialog and allow cancel
     const doesConfirm = window.confirm("Do you want to cancel this reservation?");
     // return early to exit out of function if not confirmed
     if (!doesConfirm) {
       return;
     }
-    const res = await cancelReservation(reservation_id)
+
+    const res = await cancelReservation(reservation_id, abortController.signal)
     onCancelReservation(res)
+
+    return () => abortController.abort();
+
   }
 
+  // Defines seat button for reusability
   const seatButton = <>{
     reservation.status === "seated" ? null :
       <Link
@@ -32,6 +40,7 @@ function ReservationItem({ reservation, onCancelReservation }) {
       </Link>
   }</>;
 
+  // Defines edit button for reusability
   const editButton = <Link
     to={`/reservations/${reservation_id}/edit`}
     href={`/reservations/${reservation_id}/edit`}
@@ -40,6 +49,7 @@ function ReservationItem({ reservation, onCancelReservation }) {
     <span className="oi oi-pencil" />
   </Link>;
 
+  // Defines cancel button for reusability
   const cancelButton = <button
     onClick={handleCancel}
     data-reservation-id-cancel={reservation.reservation_id}
@@ -49,6 +59,7 @@ function ReservationItem({ reservation, onCancelReservation }) {
     <span className="d-lg-none oi oi-trash"></span>
   </button>;
 
+  // Determines which icon to use for x-small to md-screen views
   const statusIcon = () => {
     switch (reservation.status) {
       case 'booked':
@@ -65,6 +76,7 @@ function ReservationItem({ reservation, onCancelReservation }) {
   }
 
   return (
+    // Utilizes bootstrap for style, responsiveness, and mobile/desktop compatibility
     <tr>
       <td className="d-table-cell"> {reservation.reservation_time.slice(0, 5)}</td>
       <td className="d-table-cell" style={{ overflow: 'hidden' }}>{reservation.last_name}</td>

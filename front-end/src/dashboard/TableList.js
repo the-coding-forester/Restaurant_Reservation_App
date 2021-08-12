@@ -7,6 +7,7 @@ import { faInfo } from '@fortawesome/free-solid-svg-icons';
 function TableList({ tables, tablesErrors, onUpdateTable }) {
 
   return (
+    // Utilizes bootstrap for style, responsiveness, and mobile/desktop compatibility
     <div>
       <table className="table d-table align-middle" style={{ tableLayout: 'fixed' }}>
         <thead>

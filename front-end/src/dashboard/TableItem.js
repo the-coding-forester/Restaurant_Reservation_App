@@ -5,15 +5,24 @@ import { finishReservation } from "../utils/api";
 function TableItem({ table, onUpdateTable }) {
 
   const handleFinish = async () => {
+    const abortController = new AbortController();
+
+    // display confirm dialog and allow cancel
     const doesConfirm = window.confirm("Is this table ready to seat new guests? This cannot be undone");
+    // return early to exit out of function if not confirmed
     if (!doesConfirm) {
       return;
     }
-    const res = await finishReservation(table.table_id);
+
+    const res = await finishReservation(table.table_id, abortController.signal);
     onUpdateTable(res);
+
+    return () => abortController.abort();
+
   }
 
   return (
+    // Utilizes bootstrap for style, responsiveness, and mobile/desktop compatibility
     <tr key={table.table_id}>
       <td> {table.table_name}</td>
       <td>{table.capacity}</td>

@@ -5,6 +5,8 @@ function TableForm({
   onCancel
 }) {
 
+  // STATE HANDLERS set state for each field on submit
+
   const handleTableNameChange = (event) => {
     onTableChanged({
       ...table,
@@ -19,11 +21,13 @@ function TableForm({
     });
   };
 
+  // Handles clicking cancel
   const handleClickCancel = (event) => {
     event.preventDefault();
     onCancel();
   }
 
+  // Handles submitting form
   const handleSubmitForm = (event) => {
     event.preventDefault();
     onSubmit();

@@ -8,20 +8,27 @@ function SeatReservationPage() {
   let history = useHistory();
   const { reservation_id } = useParams();
 
+  //State Assignment
   const [reservation, setReservation] = useState(null);
   const [tables, setTables] = useState(null);
   const [selectedTable, setSelectedTable] = useState(null);
 
+  // Handle loading data and setting reservation and tables state
   useEffect(() => {
+    const abortController = new AbortController();
+
     (async () => {
       const result = await readReservation(reservation_id)
       setReservation(result)
-      const available = await listTables({ occupied: false })
+      const available = await listTables({ occupied: false }, abortController.signal)
       setTables(available)
     })();
+
+    return () => abortController.abort();
+
   }, [reservation_id])
 
-
+  // Show error message if reservation does not exist
   if (reservation === null) {
     return (
       <div className="SeatReservation">
@@ -30,6 +37,7 @@ function SeatReservationPage() {
     )
   }
 
+  //Shows error message if there are no available tables
   if (tables === null) {
     return (
       <div className="SeatReservation">
@@ -48,18 +56,25 @@ function SeatReservationPage() {
 
   const reservationInfoSentence = `${reservation_date} at ${reservation_time.slice(0, 5)} - ${first_name} ${last_name} party of ${people}`
 
+  // Handle loading table
   const handleSelectTable = async (event) => {
     event.preventDefault();
+    const abortController = new AbortController();
+
     const id = event.target.value;
-    const thisTable = await readTable(id)
+    const thisTable = await readTable(id, abortController.signal)
     setSelectedTable(thisTable);
+
+    return () => abortController.abort();
   }
 
+  // Handle cancel seating
   const handleClickCancel = (event) => {
     event.preventDefault();
     history.goBack();
   }
 
+  // Handle submit seating
   const handleClickSubmit = async (event) => {
     event.preventDefault();
 

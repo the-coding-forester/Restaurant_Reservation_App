@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import { listReservations, listTables } from "../utils/api";
 import { next, previous, today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
@@ -9,7 +10,9 @@ import TableList from "./TableList";
 function Dashboard() {
   const query = useQuery();
   const queryDate = query.get("date")
+  const history = useHistory();
 
+  // State Assignment
   const [date, setDate] = useState(queryDate || today)
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
@@ -18,54 +21,71 @@ function Dashboard() {
   const [updatedTableSeat, setUpdatedTableSeat] = useState(null);
   const [cancelledReservation, setCancelledReservation] = useState(null);
 
+
+  // Loading Reservation List
   useEffect(() => {
+    const abortController = new AbortController();
     (async () => {
       try {
-        const results = await listReservations({ date })
+        const results = await listReservations({ date }, abortController.signal)
         setReservations(results)
       } catch (err) {
         setReservationsError(err)
       }
     })();
+
+    return () => abortController.abort();
+
   }, [date, tables, cancelledReservation])
 
+  // Loading Table List
   useEffect(() => {
+    const abortController = new AbortController();
     (async () => {
       try {
-        const result = await listTables({});
+        const result = await listTables({}, abortController.signal);
         setTables(result)
       } catch (err) {
         setTablesErrors(err)
       }
     })();
+
+    return () => abortController.abort();
+
   }, [updatedTableSeat])
 
+
+  // Handler for table changes
   const onUpdateTable = (updatedTable) => {
     setUpdatedTableSeat(updatedTable);
   }
 
+  // Handler for cancelling reservation
   const onCancelReservation = (cancelledReservation) => {
     setCancelledReservation(cancelledReservation);
   }
 
-  const toggleToPrevious = (event) => {
-    event.preventDefault();
-    setDate(previous);
-  }
+  // Buttons for changing date on dashboard
+  const toggleToPrevious = () => {
+    setDate(previous(date));
+    history.push(`/dashboard/?date=${previous(date)}`);
+  };
 
-  const toggleToNext = (event) => {
-    event.preventDefault();
-    setDate(next);
-  }
-
-  const toggleToToday = (event) => {
-    event.preventDefault();
+  const toggleToToday = () => {
     if (date !== today) {
       setDate(today);
     }
-  }
+    history.push(`/dashboard`);
+  };
+
+  const toggleToNext = () => {
+    setDate(next(date));
+    history.push(`/dashboard/?date=${next(date)}`);
+  };
+
 
   return (
+    // Utilizes bootstrap for style, responsiveness, and mobile/desktop compatibility
     <main>
       <div className="row justify-content-md-center">
         <h1 className="d-none d-lg-block"> Dashboard</h1>

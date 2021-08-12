@@ -5,6 +5,8 @@ function ReservationForm({
   onCancel }) {
 
 
+  // STATE HANDLERS set state for each field on submit
+
   const handleFirstNameChange = (event) => {
     onReservationChanged({
       ...reservation,
@@ -18,7 +20,6 @@ function ReservationForm({
       last_name: event.target.value,
     });
   };
-
 
   const handleMobileNumberChange = (event) => {
     onReservationChanged({
@@ -48,13 +49,13 @@ function ReservationForm({
     });
   };
 
-
+  // Handles clicking cancel
   const handleClickCancel = (event) => {
     event.preventDefault();
     onCancel();
   }
 
-
+  // Handles submitting form
   const handleSubmitForm = (event) => {
     event.preventDefault();
     onSubmit();

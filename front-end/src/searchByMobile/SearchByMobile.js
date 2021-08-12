@@ -24,7 +24,8 @@ function SearchByMobile() {
 
   return (
     <div className="SearchByMobile">
-      <h1><span className="oi oi-magnifying-glass"> Search</span></h1>
+      <h1 className="oi oi-magnifying-glass"> Search</h1>
+      <br />
       <form className="search-form">
         <label className="form-label form-control-lg" htmlFor="mobile_number">
           Phone Number
@@ -43,10 +44,10 @@ function SearchByMobile() {
       </form>
       <br />
       <ErrorAlert error={reservationsError} />
-      {reservations.length > 0 ?
+      {reservations.length > 0 && input.length > 0 ?
         <ReservationList reservations={reservations} reservationsError={reservationsError} page="search" />
         :
-        `No reservations found for ${input}.`
+        `No reservations found for input '${input}'`
       }
     </div>
   )

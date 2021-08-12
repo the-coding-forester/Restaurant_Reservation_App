@@ -3,7 +3,7 @@
 }
 
 .brand {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 body {
@@ -11,16 +11,6 @@ body {
   background-color: rgb(53, 122, 131);
 }
 
-table {
-  table-layout: fixed;
-}
-
-td.truncate {
-  white-space: unset;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-form{
-  max-width: 768px;
-  margin: auto;
+html,body {
+  overflow: auto;
 }

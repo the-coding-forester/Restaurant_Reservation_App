@@ -67,34 +67,34 @@ function Dashboard() {
 
   return (
     <main>
-      <h1> Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <div className="container">
-          <h4 className="row">Reservations for {date.slice(0, 10)}</h4>
-          <div className="row">
-            <button onClick={toggleToPrevious}>Previous</button>
-            <button onClick={toggleToToday}>Today</button>
-            <button onClick={toggleToNext}>Next</button>
-          </div>
+      <div className="row justify-content-md-center">
+        <h1 className="d-none d-lg-block"> Dashboard</h1>
+      </div>
+      <br />
+      <div>
+        <div className="row justify-content-md-center">
+          <h2 className="col-lg-6">Reservations: {date.slice(0, 10)}</h2>
+        </div>
+        <div className="row justify-content-md-center">
+          <button className="col" onClick={toggleToPrevious}>Previous</button>
+          <button className="col" onClick={toggleToToday}>Today</button>
+          <button className="col" onClick={toggleToNext}>Next</button>
         </div>
       </div>
+      <br />
+      <ReservationList
+        reservations={reservations}
+        reservationsError={reservationsError}
+        onCancelReservation={onCancelReservation}
+      />
+      <h4 className="row">Tables</h4>
       <ul className="list-group my-2">
-        <ReservationList
-          reservations={reservations}
-          reservationsError={reservationsError}
-          onCancelReservation={onCancelReservation}
+        <TableList
+          tables={tables}
+          tablesErrors={tablesErrors}
+          onUpdateTable={onUpdateTable}
         />
       </ul>
-      <div className="container">
-        <h4 className="row">Tables</h4>
-        <ul className="list-group my-2">
-          <TableList
-            tables={tables}
-            tablesErrors={tablesErrors}
-            onUpdateTable={onUpdateTable}
-          />
-        </ul>
-      </div>
     </main>
   )
 }

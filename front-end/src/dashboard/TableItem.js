@@ -23,7 +23,8 @@ function TableItem({ table, onUpdateTable }) {
       <td>
         {table.reservation_id ?
           <button data-table-id-finish={table.table_id} onClick={handleFinish}>
-            Finish
+            <span className="d-none d-lg-block">Finish</span>
+            <span className="d-lg-none oi oi-check"></span>
           </button>
           : null}
       </td>

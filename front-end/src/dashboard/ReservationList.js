@@ -1,21 +1,44 @@
 import ErrorAlert from "../Errors/ErrorAlert";
 import ReservationItem from "./ReservationItem";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfo } from '@fortawesome/free-solid-svg-icons';
+import { faTools } from '@fortawesome/free-solid-svg-icons';
+
+
 
 function ReservationList({ reservations, reservationsError, onCancelReservation }) {
 
   return (
     <div>
-      <table className="table">
+      <table className="table d-table align-middle" style={{ tableLayout: 'fixed' }}>
         <thead>
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Party Size</th>
-            <th scope="col">Status</th>
-            <th scope="col">Seat</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Cancel</th>
+          <tr className="d-table-row">
+            <th className="col d-table-cell">
+              <span className="d-none d-lg-block">Time</span>
+              <span className="d-lg-none oi oi-clock"></span>
+            </th>
+            <th className="col d-table-cell">
+              <span className="d-none d-lg-block">Last Name</span>
+              <span className="d-lg-none">Last</span>
+            </th>
+            <th className="col d-none d-md-table-cell">
+              <span className="d-none d-lg-block">First Name</span>
+              <span className="d-none d-md-block">First</span>
+            </th>
+            <th className="col d-table-cell">
+              <span className="d-none d-lg-block">Party Size</span>
+              <span className="d-lg-none oi oi-people"></span>
+            </th>
+            <th className="col d-table-cell">
+              <span className="d-none d-lg-block">Status</span>
+              <FontAwesomeIcon className="d-lg-none" icon={faInfo}></FontAwesomeIcon>
+            </th>
+            <th className="col d-none d-lg-table-cell">Seat</th>
+            <th className="col d-none d-lg-table-cell">Edit</th>
+            <th className="col d-none d-lg-table-cell">Cancel</th>
+            <th className="col d-lg-none">
+              <FontAwesomeIcon className="d-lg-none" icon={faTools}></FontAwesomeIcon>
+            </th>
           </tr>
         </thead>
         <tbody>

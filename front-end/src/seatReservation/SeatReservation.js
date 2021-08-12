@@ -46,7 +46,7 @@ function SeatReservationPage() {
     people,
   } = reservation;
 
-  const reservationInfoSentence = `${reservation_date} at ${reservation_time}: ${first_name} ${last_name} party of ${people}`
+  const reservationInfoSentence = `${reservation_date} at ${reservation_time.slice(0, 5)} - ${first_name} ${last_name} party of ${people}`
 
   const handleSelectTable = async (event) => {
     event.preventDefault();
@@ -79,9 +79,9 @@ function SeatReservationPage() {
     <div className="SeatReservation">
 
       <h1>Seat Reservation</h1>
-
+      <br />
       <h2>{reservationInfoSentence}</h2>
-
+      <br />
       <div className="d-md-flex mb-3">
         <select className="form-select bg-light" onChange={handleSelectTable} name="table_id">
           <option defaultValue>Available tables</option>

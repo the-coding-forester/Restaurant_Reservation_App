@@ -44,7 +44,7 @@ function ReservationForm({
   const handleReservationTimeChange = (event) => {
     onReservationChanged({
       ...reservation,
-      reservation_time: event.target.value,
+      reservation_time: event.target.value
     });
   };
 

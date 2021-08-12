@@ -23,7 +23,7 @@ function ReservationList({ reservations, reservationsError, onCancelReservation 
             </th>
             <th className="col d-none d-md-table-cell">
               <span className="d-none d-lg-block">First Name</span>
-              <span className="d-none d-md-block">First</span>
+              <span className="d-none d-md-block d-lg-none">First</span>
             </th>
             <th className="col d-table-cell">
               <span className="d-none d-lg-block">Party Size</span>

@@ -70,10 +70,9 @@ function Dashboard() {
       <div className="row justify-content-md-center">
         <h1 className="d-none d-lg-block"> Dashboard</h1>
       </div>
-      <br />
       <div>
         <div className="row justify-content-md-center">
-          <h2 className="col-lg-6">Reservations: {date.slice(0, 10)}</h2>
+          <h2 className="col-lg-6 mb-4">Reservations: {date.slice(0, 10)}</h2>
         </div>
         <div className="row justify-content-md-center">
           <button className="col" onClick={toggleToPrevious}>Previous</button>
@@ -81,13 +80,13 @@ function Dashboard() {
           <button className="col" onClick={toggleToNext}>Next</button>
         </div>
       </div>
-      <br />
+      <h3 className="row mt-5">Reservations</h3>
       <ReservationList
         reservations={reservations}
         reservationsError={reservationsError}
         onCancelReservation={onCancelReservation}
       />
-      <h4 className="row">Tables</h4>
+      <h3 className="row mt-5">Tables</h3>
       <ul className="list-group my-2">
         <TableList
           tables={tables}

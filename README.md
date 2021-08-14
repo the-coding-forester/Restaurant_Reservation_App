@@ -120,25 +120,25 @@ All GET requests return a JSON response. All POST/PUT requests require an applic
 
 **Dashboard**
 
-![Dashboard Page Desktop View](https://github.com/[the-coding-forester]/[Restaurant_Reservation_App]/blob/[main]/Dashboard_2_Desktop.png?raw=true)
+![Dashboard Page Desktop View](https://github.com/the-coding-forester/Restaurant_Reservation_App/blob/main/Finished_Screenshots/Dashboard_2_Desktop.png?raw=true)
 
 **Create a reservation**
 
-![New Reservation Page Desktop View](https://github.com/[the-coding-forester]/[Restaurant_Reservation_App]/blob/[main]/New_Reservation_Desktop.png?raw=true)
+![New Reservation Page Desktop View](https://github.com/the-coding-forester/Restaurant_Reservation_App/blob/main/Finished_Screenshots/New_Reservation_Desktop.png?raw=true)
 
 **Create a table**
 
-![New_Table Page Desktop View](https://github.com/[the-coding-forester]/[Restaurant_Reservation_App]/blob/[main]/New_Table_Desktop.png?raw=true)
+![New_Table Page Desktop View](https://github.com/the-coding-forester/Restaurant_Reservation_App/blob/main/Finished_Screenshots/New_Table_Desktop.png?raw=true)
 
 **Edit a reservation**
 
-![Edit_Reservation Page Desktop View](https://github.com/[the-coding-forester]/[Restaurant_Reservation_App]/blob/[main]/Edit_Reservation_Desktop.png?raw=true)
+![Edit_Reservation Page Desktop View](https://github.com/the-coding-forester/Restaurant_Reservation_App/blob/main/Finished_Screenshots/Edit_Reservation_Desktop.png?raw=true)
 
 **Seat a reservation at a table**
 
-![Seat Reservation Page Desktop View](https://github.com/[the-coding-forester]/[Restaurant_Reservation_App]/blob/[main]/Seat_Reservation_Desktop.png?raw=true)
+![Seat Reservation Page Desktop View](https://github.com/the-coding-forester/Restaurant_Reservation_App/blob/main/Finished_Screenshots/Seat_Reservation_Desktop.png?raw=true)
 
 **Search reservations by phone number**
 
-![Search Desktop Page View](https://github.com/[the-coding-forester]/[Restaurant_Reservation_App]/blob/[main]/Search_Desktop.png?raw=true)
+![Search Desktop Page View](https://github.com/the-coding-forester/Restaurant_Reservation_App/blob/main/Finished_Screenshots/Search_Desktop.png?raw=true)
 

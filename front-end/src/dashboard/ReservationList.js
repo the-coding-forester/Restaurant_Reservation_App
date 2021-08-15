@@ -1,8 +1,7 @@
 import ErrorAlert from "../Errors/ErrorAlert";
 import ReservationItem from "./ReservationItem";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfo } from '@fortawesome/free-solid-svg-icons';
-import { faTools } from '@fortawesome/free-solid-svg-icons';
+import { faInfo, faTools } from '@fortawesome/free-solid-svg-icons';
 
 
 

@@ -5,6 +5,10 @@ import { next, previous, today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
 import ReservationList from "./ReservationList";
 import TableList from "./TableList";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import legendModal from "../utils/legend-modal";
+
 
 
 function Dashboard() {
@@ -84,6 +88,7 @@ function Dashboard() {
   };
 
 
+
   return (
     // Utilizes bootstrap for style, responsiveness, and mobile/desktop compatibility
     <main>
@@ -100,7 +105,11 @@ function Dashboard() {
           <button className="col" onClick={toggleToNext}>Next</button>
         </div>
       </div>
-      <h3 className="row mt-5">Reservations</h3>
+      <h3 className="row mt-5 d-none d-lg-block">Reservations</h3>
+      <h3 className="d-lg-none">
+        Reservations &nbsp;
+        <FontAwesomeIcon className="d-lg-none" type="button" onClick={legendModal()} data-bs-toggle="modal" icon={faQuestionCircle}></FontAwesomeIcon>
+      </h3>
       <ReservationList
         reservations={reservations}
         reservationsError={reservationsError}

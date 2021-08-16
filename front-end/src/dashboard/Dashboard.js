@@ -7,7 +7,7 @@ import ReservationList from "./ReservationList";
 import TableList from "./TableList";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import legendModal from "../utils/legend-modal";
+import LegendModal from "../utils/LegendModal";
 
 
 
@@ -24,6 +24,11 @@ function Dashboard() {
   const [tablesErrors, setTablesErrors] = useState(null);
   const [updatedTableSeat, setUpdatedTableSeat] = useState(null);
   const [cancelledReservation, setCancelledReservation] = useState(null);
+  const [show, setShow] = useState(false);
+
+  //Setting state of Modal
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
 
   // Loading Reservation List
@@ -91,39 +96,50 @@ function Dashboard() {
 
   return (
     // Utilizes bootstrap for style, responsiveness, and mobile/desktop compatibility
-    <main>
-      <div className="row justify-content-md-center">
-        <h1 className="d-none d-lg-block"> Dashboard</h1>
-      </div>
-      <div>
+    <>
+      <main>
         <div className="row justify-content-md-center">
-          <h2 className="col-lg-6 mb-4">Reservations: {date.slice(0, 10)}</h2>
+          <h1 className="d-none d-lg-block"> Dashboard</h1>
         </div>
-        <div className="row justify-content-md-center">
-          <button className="col" onClick={toggleToPrevious}>Previous</button>
-          <button className="col" onClick={toggleToToday}>Today</button>
-          <button className="col" onClick={toggleToNext}>Next</button>
+        <div>
+          <div className="row justify-content-md-center">
+            <h2 className="col-lg-6 mb-4">Reservations: {date.slice(0, 10)}</h2>
+          </div>
+          <div className="row justify-content-md-center">
+            <button className="col" onClick={toggleToPrevious}>Previous</button>
+            <button className="col" onClick={toggleToToday}>Today</button>
+            <button className="col" onClick={toggleToNext}>Next</button>
+          </div>
         </div>
-      </div>
-      <h3 className="row mt-5 d-none d-lg-block">Reservations</h3>
-      <h3 className="d-lg-none">
-        Reservations &nbsp;
-        <FontAwesomeIcon className="d-lg-none" type="button" onClick={legendModal()} data-bs-toggle="modal" icon={faQuestionCircle}></FontAwesomeIcon>
-      </h3>
-      <ReservationList
-        reservations={reservations}
-        reservationsError={reservationsError}
-        onCancelReservation={onCancelReservation}
-      />
-      <h3 className="row mt-5">Tables</h3>
-      <ul className="list-group my-2">
-        <TableList
-          tables={tables}
-          tablesErrors={tablesErrors}
-          onUpdateTable={onUpdateTable}
+        <h3 className="row mt-5 d-none d-lg-block">Reservations</h3>
+        <h3 className="d-lg-none">
+          Reservations &nbsp;
+          {/**Button trigger modal */}
+          <button variant="primary" className="d-lg-none" onClick={handleShow}>
+            <FontAwesomeIcon icon={faQuestionCircle}></FontAwesomeIcon>
+          </button>
+        </h3>
+        {/**Modal */}
+
+        <ReservationList
+          reservations={reservations}
+          reservationsError={reservationsError}
+          onCancelReservation={onCancelReservation}
         />
-      </ul>
-    </main>
+        <h3 className="row mt-5">Tables</h3>
+        <ul className="list-group my-2">
+          <TableList
+            tables={tables}
+            tablesErrors={tablesErrors}
+            onUpdateTable={onUpdateTable}
+          />
+        </ul>
+      </main>
+      <LegendModal
+        handleClose={handleClose}
+        show={show}
+      />
+    </>
   )
 }
 

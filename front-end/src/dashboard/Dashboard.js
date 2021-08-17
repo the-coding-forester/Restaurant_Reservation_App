@@ -119,7 +119,6 @@ function Dashboard() {
             <FontAwesomeIcon icon={faQuestionCircle}></FontAwesomeIcon>
           </button>
         </h3>
-        {/**Modal */}
 
         <ReservationList
           reservations={reservations}
@@ -135,6 +134,7 @@ function Dashboard() {
           />
         </ul>
       </main>
+      {/**Modal */}
       <LegendModal
         handleClose={handleClose}
         show={show}
